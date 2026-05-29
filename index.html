@@ -1,0 +1,3367 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OfertaPro · Loops de Marcas Rentables</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0e14;
+    --bg-soft: #0f1419;
+    --bg-card: #131922;
+    --bg-card-hover: #161d28;
+    --border: #1f2937;
+    --border-strong: #2a3441;
+    --text: #e6edf3;
+    --text-muted: #8b96a7;
+    --text-dim: #5a6577;
+    --cyan: #00e5ff;
+    --cyan-bright: #22f0ff;
+    --cyan-dim: #008c9e;
+    --cyan-dark: rgba(0, 229, 255, 0.12);
+    --cyan-glow: rgba(0, 229, 255, 0.25);
+    --amber: #ffb547;
+    --green: #34d399;
+    --red: #f87171;
+    --shadow: 0 8px 24px rgba(0,0,0,0.4);
+    --shadow-lg: 0 16px 48px rgba(0,0,0,0.5);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Background ambient */
+  body::before {
+    content: '';
+    position: fixed;
+    top: -50%;
+    right: -20%;
+    width: 800px;
+    height: 800px;
+    background: radial-gradient(circle, var(--cyan-glow) 0%, transparent 65%);
+    filter: blur(80px);
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0.4;
+  }
+  body::after {
+    content: '';
+    position: fixed;
+    bottom: -30%;
+    left: -10%;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(0, 229, 255, 0.08) 0%, transparent 65%);
+    filter: blur(60px);
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+
+  /* ---------- HEADER ---------- */
+  .header {
+    padding: 24px 0;
+    border-bottom: 1px solid var(--border);
+    background: rgba(10, 14, 20, 0.85);
+    backdrop-filter: blur(12px);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .header-inner { display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
+  .brand { display: flex; align-items: center; gap: 14px; }
+  .brand-logo {
+    width: 48px; height: 48px;
+    background: #0a0e14;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    border: 1px solid var(--border-strong);
+    flex-shrink: 0;
+  }
+  .brand-logo img { width: 100%; height: 100%; border-radius: 9px; object-fit: cover; }
+  .brand-text { display: flex; flex-direction: column; }
+  .brand-name { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 17px; letter-spacing: -0.01em; color: var(--text); }
+  .brand-sub { font-size: 12px; color: var(--text-muted); }
+  .brand-sub b { color: var(--cyan); font-weight: 600; }
+  .header-badges { display: flex; gap: 8px; flex-wrap: wrap; }
+  .badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 6px 12px;
+    background: var(--cyan-dark);
+    border: 1px solid rgba(0, 229, 255, 0.25);
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--cyan);
+  }
+  .badge.amber { background: rgba(255, 181, 71, 0.1); border-color: rgba(255, 181, 71, 0.3); color: var(--amber); }
+  .badge.green { background: rgba(52, 211, 153, 0.1); border-color: rgba(52, 211, 153, 0.3); color: var(--green); }
+
+  /* ---------- HERO ---------- */
+  .hero { padding: 64px 0 48px; text-align: center; }
+  .hero-tag {
+    display: inline-block;
+    padding: 6px 14px;
+    background: var(--cyan-dark);
+    border: 1px solid rgba(0, 229, 255, 0.3);
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--cyan);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+  }
+  .hero h1 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(36px, 5vw, 56px);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    margin-bottom: 20px;
+  }
+  .hero h1 .accent { color: var(--cyan); position: relative; display: inline-block; }
+  .hero h1 .accent::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 6px;
+    background: var(--cyan);
+    opacity: 0.15;
+    border-radius: 3px;
+  }
+  .hero p {
+    font-size: 18px;
+    color: var(--text-muted);
+    max-width: 720px;
+    margin: 0 auto 32px;
+  }
+  .hero-meta {
+    display: flex; gap: 24px; justify-content: center; flex-wrap: wrap;
+    font-size: 13px;
+    color: var(--text-dim);
+  }
+  .hero-meta-item { display: flex; align-items: center; gap: 8px; }
+  .hero-meta-item svg { color: var(--cyan); }
+
+  /* ---------- AUTHOR STRIP ---------- */
+  .author-strip {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 20px 28px;
+    margin: 48px 0 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  .author-strip-left { display: flex; align-items: center; gap: 16px; }
+  .author-avatar {
+    width: 52px; height: 52px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--cyan) 0%, var(--cyan-dim) 100%);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 20px;
+    color: var(--bg);
+    flex-shrink: 0;
+  }
+  .author-info-label { font-size: 11px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.1em; }
+  .author-info-name { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 16px; }
+  .author-info-role { font-size: 13px; color: var(--text-muted); }
+
+  /* ---------- PROGRESS NAV ---------- */
+  .progress-nav {
+    position: sticky;
+    top: 96px;
+    z-index: 50;
+    background: rgba(15, 20, 25, 0.92);
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 16px;
+    margin-bottom: 32px;
+  }
+  .progress-bar {
+    height: 6px;
+    background: var(--bg-soft);
+    border-radius: 999px;
+    overflow: hidden;
+    margin-bottom: 12px;
+  }
+  .progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--cyan) 0%, var(--cyan-bright) 100%);
+    width: 0%;
+    transition: width 0.4s ease;
+    box-shadow: 0 0 12px var(--cyan-glow);
+  }
+  .progress-steps {
+    display: flex;
+    gap: 6px;
+    overflow-x: auto;
+    scrollbar-width: thin;
+    padding-bottom: 4px;
+  }
+  .progress-steps::-webkit-scrollbar { height: 4px; }
+  .progress-steps::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 2px; }
+  .progress-step {
+    flex-shrink: 0;
+    padding: 6px 14px;
+    border: 1px solid var(--border);
+    background: var(--bg-soft);
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .progress-step:hover { color: var(--text); border-color: var(--border-strong); }
+  .progress-step.complete {
+    background: var(--cyan-dark);
+    border-color: var(--cyan);
+    color: var(--cyan);
+  }
+  .progress-step.complete::before { content: '✓ '; }
+
+  /* ---------- STEP CARD ---------- */
+  .step {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 36px;
+    margin-bottom: 24px;
+    transition: border-color 0.2s;
+  }
+  .step:hover { border-color: var(--border-strong); }
+  .step-head { display: flex; gap: 20px; margin-bottom: 24px; align-items: flex-start; }
+  .step-num {
+    flex-shrink: 0;
+    width: 56px; height: 56px;
+    border-radius: 14px;
+    background: linear-gradient(135deg, var(--cyan-dark) 0%, rgba(0, 229, 255, 0.03) 100%);
+    border: 1px solid rgba(0, 229, 255, 0.3);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 24px;
+    color: var(--cyan);
+  }
+  .step-title { font-family: 'Space Grotesk', sans-serif; font-size: 26px; font-weight: 700; line-height: 1.2; margin-bottom: 6px; letter-spacing: -0.01em; }
+  .step-subtitle { color: var(--text-muted); font-size: 15px; }
+
+  .step-context {
+    background: var(--bg-soft);
+    border-left: 3px solid var(--cyan);
+    border-radius: 8px;
+    padding: 18px 22px;
+    margin-bottom: 28px;
+    font-size: 14.5px;
+    color: var(--text-muted);
+    line-height: 1.7;
+  }
+  .step-context strong { color: var(--text); font-weight: 600; }
+  .step-context em { color: var(--cyan); font-style: italic; }
+  .step-context .quote {
+    display: block;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px dashed var(--border-strong);
+    font-style: italic;
+    color: var(--text-dim);
+    font-size: 13.5px;
+  }
+
+  .field { margin-bottom: 22px; }
+  .field-label { display: block; font-size: 13.5px; font-weight: 600; color: var(--text); margin-bottom: 8px; }
+  .field-hint { font-size: 13px; color: var(--text-dim); margin-bottom: 10px; line-height: 1.5; }
+  .field-hint .ex { color: var(--cyan); font-style: italic; }
+
+  input[type="text"], input[type="number"], textarea, select {
+    width: 100%;
+    background: var(--bg-soft);
+    border: 1px solid var(--border-strong);
+    border-radius: 10px;
+    padding: 12px 16px;
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    font-size: 14.5px;
+    line-height: 1.5;
+    transition: all 0.15s;
+  }
+  textarea { resize: vertical; min-height: 90px; }
+  input:focus, textarea:focus, select:focus {
+    outline: none;
+    border-color: var(--cyan);
+    box-shadow: 0 0 0 3px var(--cyan-dark);
+    background: var(--bg);
+  }
+  input::placeholder, textarea::placeholder { color: var(--text-dim); }
+
+  /* Output card */
+  .output {
+    margin-top: 28px;
+    background: linear-gradient(135deg, rgba(0, 229, 255, 0.07) 0%, rgba(0, 229, 255, 0.02) 100%);
+    border: 1px solid rgba(0, 229, 255, 0.3);
+    border-radius: 14px;
+    padding: 24px;
+    position: relative;
+    overflow: hidden;
+  }
+  .output::before {
+    content: 'TU OUTPUT';
+    position: absolute;
+    top: 14px; right: 16px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    color: var(--cyan);
+    opacity: 0.6;
+  }
+  .output-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--cyan);
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+  .output-content {
+    font-size: 15px;
+    color: var(--text);
+    line-height: 1.7;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+  .output-content em { color: var(--text-muted); font-style: italic; }
+
+  /* Dynamic list items (obstacles, bonuses) */
+  .list-items { display: flex; flex-direction: column; gap: 10px; }
+  .list-item {
+    display: flex; gap: 10px; align-items: flex-start;
+    background: var(--bg-soft);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px;
+  }
+  .list-item-num {
+    flex-shrink: 0;
+    width: 28px; height: 28px;
+    background: var(--cyan-dark);
+    color: var(--cyan);
+    border-radius: 50%;
+    font-size: 13px;
+    font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    margin-top: 6px;
+  }
+  .list-item input, .list-item textarea {
+    background: transparent;
+    border: none;
+    padding: 4px 8px;
+  }
+  .list-item input:focus, .list-item textarea:focus {
+    background: var(--bg);
+    box-shadow: none;
+    border-radius: 6px;
+  }
+  .list-item-remove {
+    flex-shrink: 0;
+    background: transparent;
+    border: none;
+    color: var(--text-dim);
+    cursor: pointer;
+    width: 28px; height: 28px;
+    border-radius: 6px;
+    margin-top: 4px;
+    transition: all 0.15s;
+  }
+  .list-item-remove:hover { background: rgba(248, 113, 113, 0.1); color: var(--red); }
+
+  .btn-add {
+    margin-top: 8px;
+    background: transparent;
+    border: 1px dashed var(--border-strong);
+    color: var(--text-muted);
+    padding: 10px 16px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 13.5px;
+    font-weight: 500;
+    transition: all 0.15s;
+    width: 100%;
+  }
+  .btn-add:hover { border-color: var(--cyan); color: var(--cyan); background: var(--cyan-dark); }
+
+  /* Bonus item (more complex) */
+  .bonus-item {
+    background: var(--bg-soft);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 12px;
+    position: relative;
+  }
+  .bonus-item-head {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 12px;
+  }
+  .bonus-item-label {
+    font-weight: 600; font-size: 13px;
+    color: var(--cyan);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  .bonus-row {
+    display: grid;
+    grid-template-columns: 1fr 140px;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  .bonus-row:last-child { margin-bottom: 0; }
+
+  /* Guarantee selector */
+  .guarantee-types { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
+  @media (max-width: 600px) { .guarantee-types { grid-template-columns: 1fr; } }
+  .guarantee-type {
+    background: var(--bg-soft);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .guarantee-type:hover { border-color: var(--border-strong); background: var(--bg-card-hover); }
+  .guarantee-type.selected {
+    border-color: var(--cyan);
+    background: var(--cyan-dark);
+  }
+  .guarantee-type-title { font-weight: 600; font-size: 14px; margin-bottom: 4px; }
+  .guarantee-type-desc { font-size: 12.5px; color: var(--text-muted); line-height: 1.5; }
+
+  /* Two-column layouts */
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 700px) { .two-col { grid-template-columns: 1fr; } }
+
+  /* MAGIC formula special */
+  .magic-grid {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: 12px;
+    align-items: start;
+    margin-bottom: 14px;
+  }
+  .magic-letter {
+    background: var(--cyan-dark);
+    border: 1px solid var(--cyan);
+    color: var(--cyan);
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 22px;
+    text-align: center;
+    padding: 12px 0;
+    border-radius: 10px;
+  }
+  .magic-content { display: flex; flex-direction: column; gap: 4px; }
+  .magic-content .name { font-weight: 600; font-size: 13.5px; }
+  .magic-content .desc { font-size: 12.5px; color: var(--text-muted); margin-bottom: 6px; }
+
+  /* ---------- FINAL CARD (the OFFER) ---------- */
+  .final-section {
+    background: linear-gradient(135deg, rgba(0, 229, 255, 0.08) 0%, rgba(0, 229, 255, 0.02) 100%);
+    border: 2px solid var(--cyan);
+    border-radius: 22px;
+    padding: 48px 40px;
+    margin: 48px 0 24px;
+    position: relative;
+  }
+  .final-tag {
+    position: absolute;
+    top: -14px; left: 32px;
+    background: var(--cyan);
+    color: var(--bg);
+    padding: 6px 16px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+  }
+  .final-section h2 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(28px, 4vw, 38px);
+    font-weight: 700;
+    margin-bottom: 14px;
+    letter-spacing: -0.02em;
+  }
+  .final-section h2 .accent { color: var(--cyan); }
+  .final-section > p { color: var(--text-muted); font-size: 16px; margin-bottom: 28px; }
+
+  .actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 32px; }
+  .btn {
+    padding: 14px 24px;
+    border-radius: 12px;
+    font-family: 'Inter', sans-serif;
+    font-size: 14.5px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    border: none;
+    text-decoration: none;
+  }
+  .btn-primary {
+    background: var(--cyan);
+    color: var(--bg);
+    box-shadow: 0 4px 16px var(--cyan-glow);
+  }
+  .btn-primary:hover { background: var(--cyan-bright); transform: translateY(-1px); box-shadow: 0 6px 20px var(--cyan-glow); }
+  .btn-secondary {
+    background: transparent;
+    color: var(--text);
+    border: 1px solid var(--border-strong);
+  }
+  .btn-secondary:hover { background: var(--bg-card-hover); border-color: var(--cyan); color: var(--cyan); }
+  .btn-tertiary {
+    background: transparent;
+    color: var(--text-muted);
+    border: 1px solid transparent;
+  }
+  .btn-tertiary:hover { color: var(--text); background: var(--bg-card-hover); }
+
+  /* Offer preview */
+  .offer-preview {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 32px;
+    margin-top: 24px;
+    font-size: 15px;
+    line-height: 1.7;
+  }
+  .offer-preview h3 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 22px;
+    color: var(--cyan);
+    margin-bottom: 18px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  .offer-preview h4 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 15px;
+    color: var(--text);
+    margin: 22px 0 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  .offer-preview .empty-line {
+    color: var(--text-dim);
+    font-style: italic;
+    font-size: 14px;
+  }
+  .offer-preview ul { padding-left: 20px; }
+  .offer-preview li { margin-bottom: 6px; }
+  .stack-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 12px 0;
+    font-size: 14px;
+  }
+  .stack-table th, .stack-table td {
+    padding: 10px 12px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+  }
+  .stack-table th {
+    background: var(--bg-soft);
+    color: var(--text-muted);
+    font-weight: 600;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .stack-table tfoot td {
+    background: var(--cyan-dark);
+    font-weight: 600;
+    color: var(--cyan);
+    border-bottom: none;
+  }
+
+  /* ---------- FOOTER ---------- */
+  .cta-section {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 48px 40px;
+    text-align: center;
+    margin: 48px 0 24px;
+  }
+  .cta-section h2 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(24px, 3.5vw, 32px);
+    margin-bottom: 12px;
+    font-weight: 700;
+  }
+  .cta-section p { color: var(--text-muted); margin-bottom: 24px; max-width: 580px; margin-left: auto; margin-right: auto; }
+
+  .footer {
+    padding: 32px 0;
+    border-top: 1px solid var(--border);
+    text-align: center;
+    color: var(--text-dim);
+    font-size: 13px;
+  }
+  .footer a { color: var(--cyan); text-decoration: none; }
+
+  /* Tab buttons */
+  .tab-btn {
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    transition: all 0.2s;
+  }
+  .tab-btn:not(.active) {
+    background: transparent;
+    border-color: var(--border);
+    color: var(--text-muted);
+  }
+  .tab-btn:not(.active):hover {
+    background: var(--bg-card-hover);
+    color: var(--text);
+    border-color: var(--border-strong);
+  }
+  .tab-btn.active {
+    box-shadow: 0 0 0 2px var(--cyan-glow);
+  }
+  .tab-view { display: none; }
+  .tab-view.active { display: block; }
+
+  /* Naming generator */
+  .naming-generator {
+    margin-top: 24px;
+    padding: 20px;
+    background: var(--bg-soft);
+    border: 1px dashed var(--cyan);
+    border-radius: 12px;
+  }
+  .naming-generator h4 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 15px;
+    color: var(--cyan);
+    margin-bottom: 8px;
+  }
+  .naming-generator p { font-size: 13.5px; color: var(--text-muted); margin-bottom: 14px; }
+  .name-options { display: flex; flex-direction: column; gap: 12px; margin-top: 16px; }
+  .name-option {
+    display: flex; gap: 12px; align-items: center;
+    background: var(--bg);
+    border: 1px solid var(--border-strong);
+    border-radius: 10px;
+    padding: 14px;
+    transition: all 0.15s;
+  }
+  .name-option:hover { border-color: var(--cyan); }
+  .name-option.chosen {
+    border-color: var(--cyan);
+    background: var(--cyan-dark);
+    box-shadow: 0 0 0 2px var(--cyan-glow);
+  }
+  .name-checkbox {
+    width: 22px; height: 22px;
+    border: 2px solid var(--border-strong);
+    border-radius: 6px;
+    background: var(--bg-soft);
+    flex-shrink: 0;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.15s;
+  }
+  .name-option.chosen .name-checkbox {
+    border-color: var(--cyan);
+    background: var(--cyan);
+  }
+  .name-option.chosen .name-checkbox::after {
+    content: '✓';
+    color: var(--bg);
+    font-weight: 700;
+    font-size: 14px;
+  }
+  .name-option input[type="text"] {
+    flex: 1;
+    background: transparent;
+    border: none;
+    padding: 4px 0;
+    font-size: 15px;
+  }
+  .name-option input[type="text"]:focus {
+    background: transparent;
+    box-shadow: none;
+  }
+  .name-vibe {
+    display: block;
+    text-align: center;
+    color: var(--cyan);
+    font-size: 13px;
+    font-style: italic;
+    margin-top: 12px;
+    font-weight: 500;
+  }
+
+  /* Hooks module */
+  .hooks-hero {
+    text-align: center;
+    padding: 48px 0 32px;
+  }
+  .hooks-hero-tag {
+    display: inline-block;
+    padding: 6px 14px;
+    background: rgba(255, 181, 71, 0.12);
+    border: 1px solid rgba(255, 181, 71, 0.35);
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--amber);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+  }
+
+  .upload-zone {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 32px;
+    margin-bottom: 24px;
+  }
+  .upload-zone h2 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .upload-zone > p {
+    color: var(--text-muted);
+    font-size: 14.5px;
+    margin-bottom: 22px;
+  }
+  .load-prev-btn {
+    background: var(--cyan-dark);
+    border: 1px solid var(--cyan);
+    color: var(--cyan);
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.15s;
+    margin-bottom: 18px;
+  }
+  .load-prev-btn:hover { background: rgba(0, 229, 255, 0.2); }
+  .load-prev-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  /* Sub-avatars */
+  .subavatar-item {
+    background: var(--bg-soft);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px;
+    margin-bottom: 14px;
+    position: relative;
+  }
+  .subavatar-item-head {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 12px;
+  }
+  .subavatar-item-label {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    color: var(--amber);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-size: 12px;
+  }
+  .subavatar-fields { display: flex; flex-direction: column; gap: 10px; }
+  .subavatar-fields input, .subavatar-fields textarea {
+    background: var(--bg);
+    border: 1px solid var(--border-strong);
+  }
+
+  /* Generated angles */
+  .angles-result { margin-top: 32px; }
+  .avatar-block {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px;
+    margin-bottom: 20px;
+  }
+  .avatar-block.strongest {
+    border-color: var(--amber);
+    box-shadow: 0 0 0 1px rgba(255, 181, 71, 0.3);
+  }
+  .avatar-block-head {
+    display: flex; align-items: center; gap: 12px;
+    margin-bottom: 6px;
+    flex-wrap: wrap;
+  }
+  .avatar-block-name {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+  }
+  .avatar-rank-badge {
+    background: var(--amber);
+    color: var(--bg);
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+  }
+  .avatar-block-sub {
+    color: var(--text-muted);
+    font-size: 13.5px;
+    margin-bottom: 22px;
+  }
+  .angle {
+    background: var(--bg-soft);
+    border: 1px solid var(--border-strong);
+    border-radius: 12px;
+    padding: 18px;
+    margin-bottom: 14px;
+  }
+  .angle-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--cyan);
+    margin-bottom: 8px;
+  }
+  .angle-reason {
+    font-size: 14px;
+    color: var(--text-muted);
+    line-height: 1.6;
+    margin-bottom: 12px;
+  }
+  .angle-hooks {
+    border-top: 1px dashed var(--border-strong);
+    padding-top: 12px;
+    margin-top: 12px;
+  }
+  .angle-hook {
+    background: var(--bg);
+    border-left: 3px solid var(--amber);
+    padding: 10px 14px;
+    border-radius: 6px;
+    margin-bottom: 8px;
+    font-size: 14.5px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s;
+    position: relative;
+  }
+  .angle-hook:hover {
+    background: var(--bg-card-hover);
+    border-left-color: var(--cyan);
+  }
+
+  /* Hook library */
+  .hook-library {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px;
+    margin-top: 24px;
+  }
+  .filter-pills {
+    display: flex; gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 18px;
+  }
+  .filter-pill {
+    padding: 6px 14px;
+    border: 1px solid var(--border-strong);
+    background: var(--bg-soft);
+    border-radius: 999px;
+    font-size: 12.5px;
+    font-weight: 500;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .filter-pill:hover { color: var(--text); }
+  .filter-pill.active {
+    background: var(--cyan-dark);
+    border-color: var(--cyan);
+    color: var(--cyan);
+  }
+  .hook-list {
+    display: flex; flex-direction: column; gap: 8px;
+    max-height: 560px;
+    overflow-y: auto;
+    padding-right: 8px;
+  }
+  .hook-list::-webkit-scrollbar { width: 6px; }
+  .hook-list::-webkit-scrollbar-track { background: var(--bg-soft); border-radius: 3px; }
+  .hook-list::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 3px; }
+  .hook-card {
+    background: var(--bg-soft);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    transition: all 0.15s;
+  }
+  .hook-card:hover {
+    border-color: var(--cyan);
+    background: var(--bg-card-hover);
+  }
+  .hook-card-text {
+    flex: 1;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  .hook-card-meta {
+    display: flex; gap: 6px;
+    flex-shrink: 0;
+  }
+  .hook-tag {
+    font-size: 10.5px;
+    padding: 3px 8px;
+    background: var(--bg);
+    border: 1px solid var(--border-strong);
+    border-radius: 999px;
+    color: var(--text-dim);
+    font-weight: 500;
+  }
+  .hook-copy {
+    background: transparent;
+    border: 1px solid var(--border-strong);
+    color: var(--text-muted);
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.15s;
+    flex-shrink: 0;
+  }
+  .hook-copy:hover { color: var(--cyan); border-color: var(--cyan); }
+  .placeholder-state {
+    text-align: center;
+    padding: 48px 24px;
+    color: var(--text-dim);
+    font-style: italic;
+  }
+  .placeholder-state .icon {
+    font-size: 48px;
+    margin-bottom: 12px;
+    opacity: 0.5;
+  }
+
+  /* Dual CTA section (Skool + Calendar) */
+  .dual-cta {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-top: 24px;
+  }
+  @media (max-width: 700px) { .dual-cta { grid-template-columns: 1fr; } }
+  .dual-cta-card {
+    background: var(--bg-soft);
+    border: 1px solid var(--border-strong);
+    border-radius: 14px;
+    padding: 24px;
+    text-align: left;
+  }
+  .dual-cta-card-icon {
+    width: 40px; height: 40px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+    margin-bottom: 12px;
+  }
+  .dual-cta-card-icon.skool { background: rgba(255, 214, 0, 0.15); border: 1px solid rgba(255, 214, 0, 0.5); }
+  .dual-cta-card-icon.calendar { background: var(--cyan-dark); border: 1px solid var(--cyan); }
+  .dual-cta-card h3 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 17px;
+    margin-bottom: 6px;
+  }
+  .dual-cta-card p {
+    font-size: 13.5px;
+    color: var(--text-muted);
+    margin-bottom: 16px;
+    line-height: 1.55;
+  }
+  .dual-cta-card .btn { width: 100%; justify-content: center; }
+  .btn-skool {
+    background: #FFD600;
+    color: #0a0e14;
+  }
+  .btn-skool:hover { background: #FFE033; transform: translateY(-1px); }
+
+  /* Responsive */
+  @media (max-width: 700px) {
+    .step { padding: 24px 20px; }
+    .step-head { gap: 14px; }
+    .step-num { width: 44px; height: 44px; font-size: 20px; }
+    .step-title { font-size: 22px; }
+    .final-section { padding: 32px 22px; }
+    .hero { padding: 40px 0 32px; }
+    .progress-nav { top: 84px; padding: 12px; }
+    .upload-zone { padding: 22px; }
+    .avatar-block { padding: 22px; }
+    .hook-card { flex-direction: column; align-items: flex-start; }
+  }
+
+  /* Print styles for fallback (mostly we'll use jsPDF) */
+  @media print {
+    body::before, body::after, .header, .progress-nav, .actions, .cta-section, .footer, .author-strip { display: none; }
+    body { background: white; color: black; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<header class="header">
+  <div class="container">
+    <div class="header-inner">
+      <div class="brand">
+        <div class="brand-logo">
+          <!-- Inline SVG logo recreation - matches the LMR logo style -->
+          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <rect width="100" height="100" rx="12" fill="#0a0e14"/>
+            <text x="50" y="38" font-family="Space Grotesk, sans-serif" font-weight="700" font-size="18" fill="#00e5ff" text-anchor="middle">LOOPS</text>
+            <text x="50" y="56" font-family="Space Grotesk, sans-serif" font-weight="700" font-size="11" fill="#ffffff" text-anchor="middle">DE MARCAS</text>
+            <text x="50" y="74" font-family="Space Grotesk, sans-serif" font-weight="700" font-size="14" fill="#00e5ff" text-anchor="middle">RENTABLES</text>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <div class="brand-name">OfertaPro</div>
+          <div class="brand-sub">by <b>Loops de Marcas Rentables</b></div>
+        </div>
+      </div>
+      <div class="header-badges">
+        <button class="badge tab-btn active" data-tab="offer" onclick="switchTab('offer')">🎯 Oferta Irresistible</button>
+        <button class="badge amber tab-btn" data-tab="hooks" onclick="switchTab('hooks')">⚡ Ángulos & Hooks</button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="container">
+    <span class="hero-tag">Herramienta exclusiva · Loops de Marcas Rentables</span>
+    <h1>Construye la <span class="accent">Oferta Irresistible</span><br>que tu cliente no podrá rechazar.</h1>
+    <p>Sigue 9 pasos guiados — desde definir el resultado soñado de tu cliente hasta apilar bonos, garantías y urgencia — y descarga tu oferta lista para implementar en PDF o Google Docs.</p>
+    <div class="hero-meta">
+      <span class="hero-meta-item">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>
+        Todo corre en tu navegador
+      </span>
+      <span class="hero-meta-item">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+        ~20 minutos por oferta
+      </span>
+      <span class="hero-meta-item">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        Descarga PDF o Google Doc
+      </span>
+    </div>
+  </div>
+</section>
+
+<div class="container">
+
+  <!-- Author strip -->
+  <div class="author-strip">
+    <div class="author-strip-left">
+      <div class="author-avatar">FK</div>
+      <div>
+        <div class="author-info-label">Creado por</div>
+        <div class="author-info-name">Fauadz Kassen</div>
+        <div class="author-info-role">CEO · Loops de Marcas Rentables</div>
+      </div>
+    </div>
+    <a href="https://links.jaquefunnels.com/widget/bookings/llamada-claridad-3434-fa69dbcc-a3e5-4876-94de-d9bfbdcbc4a7" target="_blank" rel="noopener" class="btn btn-secondary">
+      📅 Agendar llamada
+    </a>
+  </div>
+
+  <!-- ============================================================
+       TAB: OFERTA IRRESISTIBLE
+       ============================================================ -->
+  <div class="tab-view active" id="tab-offer">
+
+  <!-- Progress nav -->
+  <nav class="progress-nav">
+    <div class="progress-bar"><div class="progress-bar-fill" id="progressBar"></div></div>
+    <div class="progress-steps" id="progressSteps"></div>
+  </nav>
+
+  <!-- ===== STEP 1: MERCADO Y CLIENTE ===== -->
+  <section class="step" id="step-1" data-step="1" data-title="Mercado">
+    <div class="step-head">
+      <div class="step-num">1</div>
+      <div>
+        <h2 class="step-title">Mercado y cliente ideal</h2>
+        <p class="step-subtitle">Antes que la oferta, está el mercado. Define a quién le vendes y por qué te van a escuchar.</p>
+      </div>
+    </div>
+    <div class="step-context">
+      <strong>Por qué importa este paso:</strong> Hormozi lo llama vender a un <em>"starving crowd"</em> — una multitud hambrienta. El mercado correcto vence a la mejor oferta. Una oferta promedio en un mercado desesperado, con poder de compra y fácil de alcanzar, gana siempre.
+      <span class="quote">"No existen malos productos, solo malas ofertas en mercados equivocados." — Alex Hormozi</span>
+    </div>
+
+    <div class="field">
+      <label class="field-label">¿Quién es tu cliente ideal?</label>
+      <p class="field-hint">Sé específico. Edad aproximada, situación de vida, lo que valora. <span class="ex">Ej: "Hombres 28-45, parejas estables, que olvidan las fechas importantes y quieren quedar bien sin esfuerzo."</span></p>
+      <textarea id="f_avatar" placeholder="Describe a tu cliente ideal en 2-3 líneas..."></textarea>
+    </div>
+
+    <div class="field">
+      <label class="field-label">¿Cuál es el dolor masivo que sufre?</label>
+      <p class="field-hint">No "le gustaría tener" — qué le DUELE activamente. <span class="ex">Ej: "No saber qué regalar y quedar como mal pareja en cada aniversario."</span></p>
+      <textarea id="f_dolor" placeholder="El dolor real, urgente y costoso..."></textarea>
+    </div>
+
+    <div class="two-col">
+      <div class="field">
+        <label class="field-label">¿Tiene poder adquisitivo?</label>
+        <p class="field-hint">Rango aproximado de gasto en la categoría.</p>
+        <input type="text" id="f_poder" placeholder="Ej: $30-80 USD por regalo">
+      </div>
+      <div class="field">
+        <label class="field-label">¿Cómo lo vas a alcanzar?</label>
+        <p class="field-hint">El canal principal de adquisición.</p>
+        <input type="text" id="f_canal" placeholder="Ej: Meta Ads + Google Shopping">
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== STEP 2: RESULTADO SOÑADO ===== -->
+  <section class="step" id="step-2" data-step="2" data-title="Resultado">
+    <div class="step-head">
+      <div class="step-num">2</div>
+      <div>
+        <h2 class="step-title">El Resultado Soñado</h2>
+        <p class="step-subtitle">No vendas el producto. Vende la transformación.</p>
+      </div>
+    </div>
+    <div class="step-context">
+      <strong>Por qué importa este paso:</strong> Esta es la palanca más alta del numerador de la Ecuación de Valor. Tu cliente no compra el producto — compra en quién se convierte después de tenerlo. <em>"Vende Hawaii, no el vuelo en avión."</em>
+      <span class="quote">Mal: "crema hidratante". Bien: "piel que se siente y se ve 10 años más joven en 60 días, sin cremas caras y sin tratamientos."</span>
+    </div>
+
+    <div class="field">
+      <label class="field-label">Estado inicial (de dónde viene tu cliente)</label>
+      <p class="field-hint">El antes. El dolor en presente.</p>
+      <textarea id="f_estado_inicial" placeholder="Ej: Despierto cansado todos los días aunque duerma 8 horas..."></textarea>
+    </div>
+
+    <div class="field">
+      <label class="field-label">Estado final (a dónde lo llevas) — descripción sensorial</label>
+      <p class="field-hint">El después. Descríbelo con los 5 sentidos: cómo se ve, cómo se siente, qué hace diferente, qué dicen los demás.</p>
+      <textarea id="f_estado_final" placeholder="Ej: Te despiertas con energía real desde la primera alarma, sin necesidad de café para arrancar..." style="min-height:120px;"></textarea>
+    </div>
+
+    <div class="two-col">
+      <div class="field">
+        <label class="field-label">¿En cuánto tiempo lo logra?</label>
+        <p class="field-hint">Mientras más rápido, más valor percibido.</p>
+        <input type="text" id="f_tiempo" placeholder="Ej: 14 noches">
+      </div>
+      <div class="field">
+        <label class="field-label">¿Sin qué esfuerzo o sacrificio?</label>
+        <p class="field-hint">Lo que NO va a tener que renunciar.</p>
+        <input type="text" id="f_sin" placeholder="Ej: sin pastillas, sin cambiar de cama, sin renunciar a la cafeína">
+      </div>
+    </div>
+
+    <div class="output">
+      <div class="output-label">Tu promesa central</div>
+      <div class="output-content" id="o_promesa"><em>Llena los campos arriba y tu promesa central se construye aquí automáticamente…</em></div>
+    </div>
+  </section>
+
+  <!-- ===== STEP 3: OBSTACULOS ===== -->
+  <section class="step" id="step-3" data-step="3" data-title="Obstáculos">
+    <div class="step-head">
+      <div class="step-num">3</div>
+      <div>
+        <h2 class="step-title">Lista los obstáculos</h2>
+        <p class="step-subtitle">Todo lo que está en el camino entre el cliente y el resultado.</p>
+      </div>
+    </div>
+    <div class="step-context">
+      <strong>Por qué importa este paso:</strong> Cada obstáculo es una oportunidad para añadir valor a tu oferta. Mientras más problemas identifiques, más componentes podrás incluir. Aspira a 10-15 obstáculos: <strong>miedos, dudas, objeciones de precio, fricciones técnicas, problemas post-compra, presión social</strong>.
+      <span class="quote">No vas a usarlos todos. Pero los que sí uses se convierten en bonos asesinos en el Paso 5.</span>
+    </div>
+
+    <div class="field">
+      <label class="field-label">Obstáculos del cliente</label>
+      <p class="field-hint">Apunta lo que el cliente piensa al considerar comprar. Empieza con 5 y suma más.</p>
+      <div class="list-items" id="obstacles-list"></div>
+      <button class="btn-add" onclick="addObstacle()">+ Añadir obstáculo</button>
+    </div>
+  </section>
+
+  <!-- ===== STEP 4: SOLUCIONES ===== -->
+  <section class="step" id="step-4" data-step="4" data-title="Soluciones">
+    <div class="step-head">
+      <div class="step-num">4</div>
+      <div>
+        <h2 class="step-title">Convierte obstáculos en soluciones</h2>
+        <p class="step-subtitle">Por cada obstáculo, ¿qué vas a entregar tú para resolverlo?</p>
+      </div>
+    </div>
+    <div class="step-context">
+      <strong>Por qué importa este paso:</strong> Esta es la magia. No estás "regalando más cosas" — estás resolviendo más problemas. Cada solución se convierte en un activo concreto de tu oferta: un PDF, un audio, una asesoría, un complemento físico, un acceso a comunidad.
+    </div>
+
+    <div class="field">
+      <label class="field-label">Solución por cada obstáculo</label>
+      <p class="field-hint">Para cada obstáculo del paso 3, escribe la solución concreta que vas a entregar.</p>
+      <div class="list-items" id="solutions-list"></div>
+    </div>
+  </section>
+
+  <!-- ===== STEP 5: STACK ===== -->
+  <section class="step" id="step-5" data-step="5" data-title="Stack">
+    <div class="step-head">
+      <div class="step-num">5</div>
+      <div>
+        <h2 class="step-title">Empaqueta el Stack de valor</h2>
+        <p class="step-subtitle">Producto principal + bonos nombrados con valor asignado.</p>
+      </div>
+    </div>
+    <div class="step-context">
+      <strong>Por qué importa este paso:</strong> El stack es la diapositiva mental del cliente. Cada componente debe tener un <em>nombre potente</em> (orientado a beneficio, no a feature) y un <em>valor monetario individual defendible</em>. La regla de Russell Brunson: el valor total debe ser al menos <strong>10× el precio</strong>.
+      <span class="quote">Mal: "PDF de guía". Bien: "Manual de Bolsillo: 7 errores que arruinan tus resultados (y cómo evitarlos)".</span>
+    </div>
+
+    <div class="field">
+      <label class="field-label">Producto principal</label>
+      <div class="bonus-row">
+        <input type="text" id="f_main_name" placeholder="Nombre del producto principal">
+        <input type="number" id="f_main_value" placeholder="Valor $">
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="field-label">Bonos (apila 3 a 6)</label>
+      <p class="field-hint">Cada bono debe atacar una objeción específica de tu lista del paso 3.</p>
+      <div id="bonuses-list"></div>
+      <button class="btn-add" onclick="addBonus()">+ Añadir bono</button>
+    </div>
+
+    <div class="two-col">
+      <div class="field">
+        <label class="field-label">Precio de venta</label>
+        <input type="number" id="f_precio" placeholder="Tu precio">
+      </div>
+      <div class="field">
+        <label class="field-label">Valor total del stack</label>
+        <input type="text" id="f_total_value" readonly placeholder="Se calcula automáticamente">
+      </div>
+    </div>
+
+    <div class="output">
+      <div class="output-label">Ratio Valor:Precio</div>
+      <div class="output-content" id="o_ratio"><em>Llena el stack y el precio para ver tu ratio…</em></div>
+    </div>
+  </section>
+
+  <!-- ===== STEP 6: GARANTIAS ===== -->
+  <section class="step" id="step-6" data-step="6" data-title="Garantías">
+    <div class="step-head">
+      <div class="step-num">6</div>
+      <div>
+        <h2 class="step-title">Garantías que destruyen el riesgo</h2>
+        <p class="step-subtitle">Mueve el riesgo del cliente hacia ti.</p>
+      </div>
+    </div>
+    <div class="step-context">
+      <strong>Por qué importa este paso:</strong> Una garantía fuerte puede duplicar tus ventas. Las garantías agresivas generan POCAS devoluciones extra y MUCHAS ventas extra — la asimetría es brutal a tu favor. <em>Excepción</em>: si tu producto no cumple. Pero en ese caso el problema no es la garantía, es el producto.
+    </div>
+
+    <div class="field">
+      <label class="field-label">¿Qué tipo(s) de garantía vas a usar? (selecciona 1 a 3)</label>
+      <div class="guarantee-types" id="guarantee-types">
+        <div class="guarantee-type" data-gtype="incondicional">
+          <div class="guarantee-type-title">🛡️ Incondicional</div>
+          <div class="guarantee-type-desc">"Si no estás 100% satisfecho, te devolvemos el dinero. Sin preguntas." Genera máxima confianza.</div>
+        </div>
+        <div class="guarantee-type" data-gtype="condicional">
+          <div class="guarantee-type-title">🎯 Condicional (resultado)</div>
+          <div class="guarantee-type-desc">"Si haces X y no obtienes Y, te devolvemos el dinero." Filtra clientes flojos.</div>
+        </div>
+        <div class="guarantee-type" data-gtype="anti">
+          <div class="guarantee-type-title">⚡ Anti-resultado (agresiva)</div>
+          <div class="guarantee-type-desc">"Si no funciona, te devolvemos lo pagado + X extra." Para cuando tu producto es muy sólido.</div>
+        </div>
+        <div class="guarantee-type" data-gtype="implicita">
+          <div class="guarantee-type-title">📦 Implícita (cumplimiento)</div>
+          <div class="guarantee-type-desc">"Llega en 48h o es gratis." / "Lo encuentras más barato, te devolvemos la diferencia." Medible.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="field-label">Redacta tu garantía principal</label>
+      <p class="field-hint">Cómo va a aparecer textualmente en tu página de producto.</p>
+      <textarea id="f_garantia" placeholder="Ej: Pruébalo 100 noches en tu casa. Si no duermes mejor, te devolvemos el 100% y nos lo llevamos sin costo." style="min-height:90px;"></textarea>
+    </div>
+
+    <div class="field">
+      <label class="field-label">¿Garantía secundaria? (opcional, recomendado apilar)</label>
+      <textarea id="f_garantia2" placeholder="Ej: Envío gratis garantizado en menos de 5 días o te lo regalamos."></textarea>
+    </div>
+  </section>
+
+  <!-- ===== STEP 7: ESCASEZ Y URGENCIA ===== -->
+  <section class="step" id="step-7" data-step="7" data-title="Urgencia">
+    <div class="step-head">
+      <div class="step-num">7</div>
+      <div>
+        <h2 class="step-title">Escasez y urgencia</h2>
+        <p class="step-subtitle">La razón para comprar HOY y no mañana.</p>
+      </div>
+    </div>
+    <div class="step-context">
+      <strong>Por qué importa este paso:</strong> <em>Escasez</em> = disponibilidad limitada. <em>Urgencia</em> = razón para actuar ahora. Hormozi enseña 3 tipos: cantidad (50 unidades), tiempo (cierra el viernes) y bonos (los bonos se acaban). <strong>Regla ética:</strong> escasez REAL siempre vence a escasez fake. Si dices "solo 50", cumple.
+    </div>
+
+    <div class="field">
+      <label class="field-label">Escasez (qué se va a acabar)</label>
+      <p class="field-hint">Tipo + razón real. <span class="ex">Ej: "Edición limitada de 100 unidades por mes — producción artesanal."</span></p>
+      <textarea id="f_escasez" placeholder="Tu escasez real..."></textarea>
+    </div>
+
+    <div class="field">
+      <label class="field-label">Urgencia (por qué actuar HOY)</label>
+      <p class="field-hint">Una razón concreta. <span class="ex">Ej: "Para tenerlo antes del Día de la Madre, pide antes del 5 de mayo."</span></p>
+      <textarea id="f_urgencia" placeholder="Tu razón para actuar ahora..."></textarea>
+    </div>
+  </section>
+
+  <!-- ===== STEP 8: NAMING MAGIC ===== -->
+  <section class="step" id="step-8" data-step="8" data-title="Naming">
+    <div class="step-head">
+      <div class="step-num">8</div>
+      <div>
+        <h2 class="step-title">Nombra tu oferta — Fórmula MAGIC</h2>
+        <p class="step-subtitle">El nombre hace el 50% del trabajo de conversión.</p>
+      </div>
+    </div>
+    <div class="step-context">
+      <strong>Por qué importa este paso:</strong> La fórmula MAGIC de Hormozi te ayuda a nombrar la oferta para que conecte con tu cliente ideal y comunique el resultado en una sola línea. No todos los elementos tienen que estar, pero mientras más, mejor.
+    </div>
+
+    <div class="magic-grid">
+      <div class="magic-letter">M</div>
+      <div class="magic-content">
+        <div class="name">Magnetic reason why (razón magnética)</div>
+        <div class="desc">¿Por qué esta oferta existe ahora? "Edición de aniversario", "Black Friday", "Lanzamiento"...</div>
+        <input type="text" id="f_magic_m" placeholder="Ej: Edición Aniversario">
+      </div>
+    </div>
+    <div class="magic-grid">
+      <div class="magic-letter">A</div>
+      <div class="magic-content">
+        <div class="name">Avatar (cliente ideal)</div>
+        <div class="desc">Mete a tu cliente en el nombre. "Para parejas que celebran", "Para mamás primerizas"...</div>
+        <input type="text" id="f_magic_a" placeholder="Ej: Para Parejas Que Celebran">
+      </div>
+    </div>
+    <div class="magic-grid">
+      <div class="magic-letter">G</div>
+      <div class="magic-content">
+        <div class="name">Goal (resultado deseado)</div>
+        <div class="desc">El resultado en el nombre. "Dormir profundo", "Sorprender sin esfuerzo"...</div>
+        <input type="text" id="f_magic_g" placeholder="Ej: Sorprender Sin Esfuerzo">
+      </div>
+    </div>
+    <div class="magic-grid">
+      <div class="magic-letter">I</div>
+      <div class="magic-content">
+        <div class="name">Interval (intervalo de tiempo)</div>
+        <div class="desc">"En 30 días", "En 24h", "En 7 días". El tiempo crea expectativa.</div>
+        <input type="text" id="f_magic_i" placeholder="Ej: en 5 días">
+      </div>
+    </div>
+    <div class="magic-grid">
+      <div class="magic-letter">C</div>
+      <div class="magic-content">
+        <div class="name">Container word (palabra contenedora)</div>
+        <div class="desc">Sistema, Kit, Edición, Box, Bundle, Colección, Programa...</div>
+        <input type="text" id="f_magic_c" placeholder="Ej: Kit">
+      </div>
+    </div>
+
+    <div class="field" style="margin-top: 24px;">
+      <label class="field-label">Nombre final de tu oferta</label>
+      <p class="field-hint">Combina las letras que tengan sentido. No tienen que estar todas. Itera 3-5 versiones.</p>
+      <input type="text" id="f_offer_name" placeholder="Ej: Kit Aniversario: Sorprende a Tu Pareja en 5 Días">
+    </div>
+
+    <div class="naming-generator">
+      <h4>⚡ Generador automático de nombres</h4>
+      <p>Te proponemos 3 combinaciones distintas de las letras MAGIC que llenaste arriba. Edita la que más te guste y marca la que vas a usar — esa pasa al campo de nombre final automáticamente.</p>
+      <button class="btn-add" onclick="generateOfferNames()" style="border-style:solid; background:var(--cyan); color:var(--bg); border-color:var(--cyan); font-weight:600;">
+        🎲 Generar 3 propuestas de nombre
+      </button>
+      <div class="name-options" id="name-options"></div>
+      <span class="name-vibe" id="name-vibe-text" style="display:none;">✨ Escoge el nombre que más te haga vibrar</span>
+    </div>
+  </section>
+
+  <!-- ===== STEP 9: TOUCHSTONE ===== -->
+  <section class="step" id="step-9" data-step="9" data-title="Touchstone">
+    <div class="step-head">
+      <div class="step-num">9</div>
+      <div>
+        <h2 class="step-title">El Touchstone (titular de 3 segundos)</h2>
+        <p class="step-subtitle">El cliente decide en 3 segundos si sigue leyendo.</p>
+      </div>
+    </div>
+    <div class="step-context">
+      <strong>Por qué importa este paso:</strong> Mark Joyner enseña que tu titular debe responder al menos 2 de estas 4 preguntas: <strong>¿qué vendes?</strong>, <strong>¿cuánto cuesta?</strong>, <strong>¿qué hay para mí?</strong>, <strong>¿por qué creerte?</strong>. Mientras más responda en menos palabras, mejor.
+      <span class="quote">"Pizza caliente a tu puerta en menos de 30 minutos, o es gratis." — Domino's. Responde qué, qué hay para mí, y la garantía.</span>
+    </div>
+
+    <div class="field">
+      <label class="field-label">Touchstone — Versión 1 (orientada al resultado)</label>
+      <textarea id="f_ts1" placeholder="Ej: El regalo único que va a hacer llorar a tu pareja, listo en 5 días."></textarea>
+    </div>
+    <div class="field">
+      <label class="field-label">Touchstone — Versión 2 (con garantía)</label>
+      <textarea id="f_ts2" placeholder="Ej: 100 noches para probarlo. Si no duermes mejor, lo recogemos gratis."></textarea>
+    </div>
+    <div class="field">
+      <label class="field-label">Touchstone — Versión 3 (con cliente ideal)</label>
+      <textarea id="f_ts3" placeholder="Ej: Para parejas que olvidaron qué regalar este año: tenemos algo único."></textarea>
+    </div>
+  </section>
+
+  <!-- ===== FINAL: TU OFERTA ===== -->
+  <section class="final-section" id="final">
+    <div class="final-tag">TU OFERTA IRRESISTIBLE</div>
+    <h2>Tu oferta está <span class="accent">lista.</span></h2>
+    <p>Revisa el resumen abajo. Si todo se ve bien, descárgalo en PDF o ábrelo en Google Docs para editarlo.</p>
+
+    <div class="offer-preview" id="offer-preview">
+      <!-- Generated dynamically -->
+    </div>
+
+    <div class="actions">
+      <button class="btn btn-primary" onclick="downloadPDF()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Descargar PDF
+      </button>
+      <button class="btn btn-secondary" onclick="openInGoogleDocs()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        Abrir en Google Docs
+      </button>
+      <button class="btn btn-tertiary" onclick="copyToClipboard()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+        Copiar texto
+      </button>
+      <button class="btn btn-tertiary" onclick="resetAll()">
+        ↺ Empezar de nuevo
+      </button>
+    </div>
+  </section>
+
+  <!-- CTA: Skool o Agenda -->
+  <section class="cta-section" id="cta">
+    <h2>¿Quieres que <span style="color:var(--cyan);">Fauadz y su equipo</span> revisen tu oferta?</h2>
+    <p>Si ya estás dentro del programa, comparte tu oferta en la comunidad de Skool para que toda la comunidad pueda verla. Si todavía no estás, agenda para postular al acompañamiento.</p>
+    <div class="dual-cta">
+      <div class="dual-cta-card">
+        <div class="dual-cta-card-icon skool">🎓</div>
+        <h3>Ya estoy en el programa</h3>
+        <p>Comparte tu oferta en la comunidad de Skool <b>Crear y No Parar</b>. Fauadz, el equipo y toda la comunidad pueden verla y darte feedback.</p>
+        <a href="#" onclick="copyOfferAndOpenSkool(event)" class="btn btn-skool">
+          🎓 Compartir en Skool
+        </a>
+      </div>
+      <div class="dual-cta-card">
+        <div class="dual-cta-card-icon calendar">📅</div>
+        <h3>Todavía no estoy</h3>
+        <p>Agenda una llamada de claridad para postular al programa de acompañamiento Loops de Marcas Rentables.</p>
+        <a href="https://links.jaquefunnels.com/widget/bookings/llamada-claridad-3434-fa69dbcc-a3e5-4876-94de-d9bfbdcbc4a7" target="_blank" rel="noopener" class="btn btn-primary">
+          📅 Agendar llamada
+        </a>
+      </div>
+    </div>
+  </section>
+
+  </div><!-- /tab-offer -->
+
+
+  <!-- ============================================================
+       TAB: ÁNGULOS & HOOKS
+       ============================================================ -->
+  <div class="tab-view" id="tab-hooks">
+
+    <div class="hooks-hero">
+      <span class="hooks-hero-tag">Generador de Ángulos & Hooks</span>
+      <h1 style="font-family:'Space Grotesk',sans-serif; font-size:clamp(32px,4.5vw,46px); font-weight:700; line-height:1.15; letter-spacing:-0.02em; margin-bottom:14px;">
+        Convierte tu oferta en <span style="color:var(--amber);">ángulos accionables</span> y hooks hiper-específicos
+      </h1>
+      <p style="font-size:16px; color:var(--text-muted); max-width:720px; margin:0 auto;">
+        Sube los datos de tu oferta + tus sub-avatares y la app te genera ángulos psicológicamente afilados con sus respectivos hooks listos para usar en ads.
+      </p>
+    </div>
+
+    <!-- VARIABLES DE LA OFERTA -->
+    <div class="upload-zone">
+      <h2>Paso 1 · Carga los datos de tu oferta</h2>
+      <p>Estos son los datos base que vamos a usar para rellenar las plantillas de hooks. Si ya construiste tu Oferta Irresistible en la otra pestaña, podemos cargar los datos automáticamente.</p>
+
+      <button class="load-prev-btn" id="loadOfferDataBtn" onclick="loadOfferDataToHooks()">
+        ⬇️ Cargar datos de mi Oferta Irresistible
+      </button>
+
+      <div class="field">
+        <label class="field-label">Audiencia objetivo (amplia)</label>
+        <p class="field-hint">El público amplio. <span class="ex">Ej: "Hombres de 22 a 55 años."</span></p>
+        <input type="text" id="h_audiencia" placeholder="Ej: Hombres de 22 a 55 años">
+      </div>
+
+      <div class="field">
+        <label class="field-label">Segmento de audiencia (específico)</label>
+        <p class="field-hint">El público en una situación concreta. <span class="ex">Ej: "Hombres de 27 años, solteros, buscando citas románticas."</span></p>
+        <input type="text" id="h_segmento" placeholder="Ej: Hombres solteros buscando citas románticas">
+      </div>
+
+      <div class="field">
+        <label class="field-label">Problema que resuelves</label>
+        <p class="field-hint">El dolor activo del cliente. <span class="ex">Ej: "No saber qué regalar y quedar como mal pareja."</span></p>
+        <input type="text" id="h_problema" placeholder="Ej: No saber qué regalar en fechas importantes">
+      </div>
+
+      <div class="field">
+        <label class="field-label">Transformación que generas</label>
+        <p class="field-hint">El estado final deseable. <span class="ex">Ej: "Convertirte en el regalador favorito de tu pareja sin esfuerzo."</span></p>
+        <input type="text" id="h_transformacion" placeholder="Ej: Quedar como héroe en cada aniversario">
+      </div>
+
+      <div class="field">
+        <label class="field-label">Mecanismo no deseado (lo que NO funciona / la competencia)</label>
+        <p class="field-hint">Lo que el cliente ha probado y le falla. <span class="ex">Ej: "Flores genéricas + tarjeta de farmacia."</span></p>
+        <input type="text" id="h_mec_no" placeholder="Ej: Flores genéricas y regalos de última hora">
+      </div>
+
+      <div class="field">
+        <label class="field-label">Tu mecanismo único (cómo lo resuelves tú)</label>
+        <p class="field-hint">Lo que solo tú haces. <span class="ex">Ej: "Mapas estelares personalizados con la fecha exacta."</span></p>
+        <input type="text" id="h_mec_si" placeholder="Ej: Regalos personalizados que cuentan tu historia">
+      </div>
+    </div>
+
+    <!-- SUB AVATARES -->
+    <div class="upload-zone">
+      <h2>Paso 2 · Define tus sub-avatares (opcional pero recomendado)</h2>
+      <p>Un sub-avatar es <strong>tu cliente ideal atravesando una situación o circunstancia específica</strong>. No es solo una variante demográfica — es el mismo avatar pero metido en un momento, un contexto o un disparador particular que cambia cómo le hablas.</p>
+      <p style="background:rgba(255,181,71,0.08); border:1px dashed rgba(255,181,71,0.4); border-radius:10px; padding:14px 16px; margin-top:14px; font-size:13.5px; color:var(--text);">
+        <strong style="color:var(--amber);">Ejemplo:</strong> Si tu audiencia es <em>"Hombres de 22 a 55 años"</em>, un sub-avatar específico sería <em>"Hombres de 27 años, solteros, buscando citas románticas"</em>. Mismo producto, mismo problema general (cuidado personal), pero el contexto cambia todo: el dolor concreto, el deseo, las palabras que usa, y por eso los ángulos y hooks que le hablan a él son muy distintos de los que le hablarían a un hombre casado de 45 con hijos.
+      </p>
+
+      <div id="subavatars-list" style="margin-top:18px;"></div>
+      <button class="btn-add" onclick="addSubavatar()">+ Añadir sub-avatar</button>
+    </div>
+
+    <!-- PROCESAR -->
+    <div style="text-align: center; margin: 40px 0;">
+      <button class="btn btn-primary" onclick="processAnglesAndHooks()" style="font-size:16px; padding:16px 32px;">
+        ⚡ Procesar ángulos y hooks
+      </button>
+      <p style="font-size:13px; color:var(--text-dim); margin-top:12px;">
+        La app va a generar ángulos accionables por sub-avatar y rellenar 200+ plantillas de hooks con tus datos.
+      </p>
+    </div>
+
+    <!-- RESULTADOS: ÁNGULOS -->
+    <div id="angles-result" class="angles-result"></div>
+
+    <!-- LIBRERÍA DE HOOKS -->
+    <div class="hook-library" id="hook-library" style="display:none;">
+      <h2 style="font-family:'Space Grotesk',sans-serif; font-size:24px; margin-bottom:6px;">📚 Librería de hooks rellenados</h2>
+      <p style="color:var(--text-muted); font-size:14px; margin-bottom:20px;">
+        210+ plantillas con tus variables ya sustituidas. Filtra por categoría, click en cualquier hook para copiarlo.
+      </p>
+
+      <div class="field">
+        <input type="text" id="hookSearch" placeholder="🔍 Buscar hook..." oninput="renderHookList()">
+      </div>
+
+      <div class="filter-pills" id="hookFilters"></div>
+      <div class="hook-list" id="hookList"></div>
+    </div>
+
+    <!-- DUAL CTA EN PESTAÑA DE HOOKS -->
+    <section class="cta-section" style="margin-top:48px;">
+      <h2>¿Listo para lanzar estos hooks en tus ads?</h2>
+      <p>Si quieres que <b style="color:var(--cyan);">Fauadz y su equipo</b> revisen qué ángulos lanzar primero y cómo escalar lo que funcione, este es el momento.</p>
+      <div class="dual-cta">
+        <div class="dual-cta-card">
+          <div class="dual-cta-card-icon skool">🎓</div>
+          <h3>Ya estoy en el programa</h3>
+          <p>Comparte tus ángulos y hooks en la comunidad de Skool <b>Crear y No Parar</b>.</p>
+          <a href="#" onclick="copyHooksAndOpenSkool(event)" class="btn btn-skool">
+            🎓 Compartir en Skool
+          </a>
+        </div>
+        <div class="dual-cta-card">
+          <div class="dual-cta-card-icon calendar">📅</div>
+          <h3>Todavía no estoy</h3>
+          <p>Agenda llamada de claridad para postular al acompañamiento.</p>
+          <a href="https://links.jaquefunnels.com/widget/bookings/llamada-claridad-3434-fa69dbcc-a3e5-4876-94de-d9bfbdcbc4a7" target="_blank" rel="noopener" class="btn btn-primary">
+            📅 Agendar llamada
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </div><!-- /tab-hooks -->
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p>LOOPS de Marcas Rentables · OfertaPro · Todos los datos quedan en tu navegador — nada se almacena en servidores.</p>
+    <p style="margin-top:8px;">Metodología basada en el trabajo de Alex Hormozi, Mark Joyner, Russell Brunson y Dan Kennedy.</p>
+  </footer>
+
+</div>
+
+<!-- ==== JS ==== -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script>
+// ============== STATE ==============
+const state = {
+  obstacles: [],
+  solutions: {},
+  bonuses: [],
+  guaranteeTypes: new Set(),
+  fields: {}
+};
+
+const STORAGE_KEY = 'ofertapro_v1';
+
+function loadState() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return;
+    const saved = JSON.parse(raw);
+    if (saved.obstacles) state.obstacles = saved.obstacles;
+    if (saved.solutions) state.solutions = saved.solutions;
+    if (saved.bonuses) state.bonuses = saved.bonuses;
+    if (saved.guaranteeTypes) state.guaranteeTypes = new Set(saved.guaranteeTypes);
+    if (saved.fields) state.fields = saved.fields;
+  } catch(e) { console.warn('Load failed', e); }
+}
+
+function saveState() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({
+      obstacles: state.obstacles,
+      solutions: state.solutions,
+      bonuses: state.bonuses,
+      guaranteeTypes: Array.from(state.guaranteeTypes),
+      fields: state.fields
+    }));
+  } catch(e) {}
+}
+
+// ============== FIELDS ==============
+const TEXT_FIELDS = [
+  'f_avatar','f_dolor','f_poder','f_canal',
+  'f_estado_inicial','f_estado_final','f_tiempo','f_sin',
+  'f_main_name','f_main_value','f_precio',
+  'f_garantia','f_garantia2',
+  'f_escasez','f_urgencia',
+  'f_magic_m','f_magic_a','f_magic_g','f_magic_i','f_magic_c','f_offer_name',
+  'f_ts1','f_ts2','f_ts3'
+];
+
+function bindFields() {
+  TEXT_FIELDS.forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    if (state.fields[id] !== undefined) el.value = state.fields[id];
+    el.addEventListener('input', () => {
+      state.fields[id] = el.value;
+      saveState();
+      refreshOutputs();
+    });
+  });
+}
+
+// ============== OBSTACLES ==============
+function renderObstacles() {
+  const wrap = document.getElementById('obstacles-list');
+  wrap.innerHTML = '';
+  state.obstacles.forEach((text, idx) => {
+    const div = document.createElement('div');
+    div.className = 'list-item';
+    div.innerHTML = `
+      <div class="list-item-num">${idx + 1}</div>
+      <input type="text" value="${escapeAttr(text)}" placeholder="Ej: ¿Y si llega después del aniversario?" oninput="updateObstacle(${idx}, this.value)">
+      <button class="list-item-remove" onclick="removeObstacle(${idx})" title="Eliminar">✕</button>
+    `;
+    wrap.appendChild(div);
+  });
+  renderSolutions();
+}
+
+function addObstacle() {
+  state.obstacles.push('');
+  saveState();
+  renderObstacles();
+}
+
+function updateObstacle(idx, val) {
+  state.obstacles[idx] = val;
+  saveState();
+  renderSolutions();
+  refreshOutputs();
+}
+
+function removeObstacle(idx) {
+  state.obstacles.splice(idx, 1);
+  // Re-key solutions
+  const newSolutions = {};
+  Object.keys(state.solutions).forEach(k => {
+    const oldIdx = parseInt(k);
+    if (oldIdx < idx) newSolutions[oldIdx] = state.solutions[k];
+    else if (oldIdx > idx) newSolutions[oldIdx - 1] = state.solutions[k];
+  });
+  state.solutions = newSolutions;
+  saveState();
+  renderObstacles();
+}
+
+// ============== SOLUTIONS ==============
+function renderSolutions() {
+  const wrap = document.getElementById('solutions-list');
+  wrap.innerHTML = '';
+  if (state.obstacles.length === 0) {
+    wrap.innerHTML = '<div style="color:var(--text-dim); font-style:italic; padding:16px; text-align:center;">Primero añade obstáculos en el Paso 3.</div>';
+    return;
+  }
+  state.obstacles.forEach((text, idx) => {
+    const sol = state.solutions[idx] || '';
+    const div = document.createElement('div');
+    div.className = 'list-item';
+    div.style.flexDirection = 'column';
+    div.style.alignItems = 'stretch';
+    div.innerHTML = `
+      <div style="display:flex; gap:10px; align-items:center; margin-bottom:8px;">
+        <div class="list-item-num">${idx + 1}</div>
+        <div style="font-size:13px; color:var(--text-muted); font-style:italic;">${escapeHtml(text || '(obstáculo vacío)')}</div>
+      </div>
+      <textarea placeholder="¿Qué vas a entregar para resolver este obstáculo?" oninput="updateSolution(${idx}, this.value)" style="min-height:60px; border:1px solid var(--border-strong); background:var(--bg); border-radius:8px; padding:10px;">${escapeAttr(sol)}</textarea>
+    `;
+    wrap.appendChild(div);
+  });
+}
+
+function updateSolution(idx, val) {
+  state.solutions[idx] = val;
+  saveState();
+  refreshOutputs();
+}
+
+// ============== BONUSES ==============
+function renderBonuses() {
+  const wrap = document.getElementById('bonuses-list');
+  wrap.innerHTML = '';
+  state.bonuses.forEach((bonus, idx) => {
+    const div = document.createElement('div');
+    div.className = 'bonus-item';
+    div.innerHTML = `
+      <div class="bonus-item-head">
+        <span class="bonus-item-label">Bono ${idx + 1}</span>
+        <button class="list-item-remove" onclick="removeBonus(${idx})" title="Eliminar bono">✕</button>
+      </div>
+      <div class="bonus-row">
+        <input type="text" placeholder="Nombre potente del bono" value="${escapeAttr(bonus.name || '')}" oninput="updateBonus(${idx}, 'name', this.value)">
+        <input type="number" placeholder="Valor $" value="${bonus.value || ''}" oninput="updateBonus(${idx}, 'value', this.value)">
+      </div>
+      <input type="text" placeholder="¿Qué objeción ataca este bono?" value="${escapeAttr(bonus.objection || '')}" oninput="updateBonus(${idx}, 'objection', this.value)" style="margin-top:4px;">
+    `;
+    wrap.appendChild(div);
+  });
+}
+
+function addBonus() {
+  state.bonuses.push({ name: '', value: '', objection: '' });
+  saveState();
+  renderBonuses();
+}
+
+function updateBonus(idx, key, val) {
+  state.bonuses[idx][key] = val;
+  saveState();
+  refreshOutputs();
+}
+
+function removeBonus(idx) {
+  state.bonuses.splice(idx, 1);
+  saveState();
+  renderBonuses();
+  refreshOutputs();
+}
+
+// ============== GUARANTEE TYPES ==============
+function setupGuaranteeTypes() {
+  document.querySelectorAll('.guarantee-type').forEach(el => {
+    const gtype = el.dataset.gtype;
+    if (state.guaranteeTypes.has(gtype)) el.classList.add('selected');
+    el.addEventListener('click', () => {
+      if (state.guaranteeTypes.has(gtype)) {
+        state.guaranteeTypes.delete(gtype);
+        el.classList.remove('selected');
+      } else {
+        state.guaranteeTypes.add(gtype);
+        el.classList.add('selected');
+      }
+      saveState();
+      refreshOutputs();
+    });
+  });
+}
+
+// ============== ESCAPING HELPERS ==============
+function escapeHtml(s) {
+  if (!s) return '';
+  return String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+}
+function escapeAttr(s) {
+  if (!s) return '';
+  return String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+}
+
+// ============== OUTPUTS (live calculations) ==============
+function refreshOutputs() {
+  // Promesa central
+  const f = state.fields;
+  const promesaParts = [];
+  if (f.f_estado_inicial) promesaParts.push(`Pasa de ${f.f_estado_inicial.trim()}`);
+  if (f.f_estado_final) promesaParts.push(`a ${f.f_estado_final.trim()}`);
+  if (f.f_tiempo) promesaParts.push(`en ${f.f_tiempo.trim()}`);
+  if (f.f_sin) promesaParts.push(`${f.f_sin.trim().startsWith('sin') ? '' : 'sin '}${f.f_sin.trim()}`);
+  const promesaEl = document.getElementById('o_promesa');
+  if (promesaEl) {
+    if (promesaParts.length > 0) {
+      promesaEl.innerHTML = escapeHtml(promesaParts.join(', ')) + '.';
+    } else {
+      promesaEl.innerHTML = '<em>Llena los campos arriba y tu promesa central se construye aquí automáticamente…</em>';
+    }
+  }
+
+  // Stack total + ratio
+  let total = parseFloat(f.f_main_value) || 0;
+  state.bonuses.forEach(b => { total += parseFloat(b.value) || 0; });
+  const totalEl = document.getElementById('f_total_value');
+  if (totalEl) totalEl.value = total > 0 ? `$${total.toLocaleString('es-CL')}` : '';
+
+  const precio = parseFloat(f.f_precio) || 0;
+  const ratioEl = document.getElementById('o_ratio');
+  if (ratioEl) {
+    if (precio > 0 && total > 0) {
+      const ratio = total / precio;
+      let verdict = '', color = '';
+      if (ratio >= 10) { verdict = '🟢 Excelente — tu oferta vale al menos 10× el precio'; color = 'var(--green)'; }
+      else if (ratio >= 5) { verdict = '🟡 Bien, pero puedes apilar más valor para llegar a 10×'; color = 'var(--amber)'; }
+      else { verdict = '🔴 Bajo — agrega más bonos o sube su valor percibido'; color = 'var(--red)'; }
+      ratioEl.innerHTML = `<div style="font-size:24px; font-weight:700; color:${color}; margin-bottom:6px;">${ratio.toFixed(1)} × </div><div style="font-size:14px; color:var(--text-muted);">${verdict}</div>`;
+    } else {
+      ratioEl.innerHTML = '<em>Llena el stack y el precio para ver tu ratio…</em>';
+    }
+  }
+
+  // Progress
+  updateProgress();
+  // Final preview
+  renderFinalPreview();
+}
+
+// ============== PROGRESS BAR ==============
+function isStepComplete(stepNum) {
+  const f = state.fields;
+  switch(stepNum) {
+    case 1: return f.f_avatar && f.f_dolor;
+    case 2: return f.f_estado_inicial && f.f_estado_final;
+    case 3: return state.obstacles.filter(o => o.trim()).length >= 3;
+    case 4: return state.obstacles.filter((o,i) => o.trim() && (state.solutions[i]||'').trim()).length >= 3;
+    case 5: return f.f_main_name && f.f_precio && state.bonuses.length >= 1;
+    case 6: return state.guaranteeTypes.size >= 1 && f.f_garantia;
+    case 7: return f.f_escasez || f.f_urgencia;
+    case 8: return f.f_offer_name;
+    case 9: return f.f_ts1 || f.f_ts2 || f.f_ts3;
+    default: return false;
+  }
+}
+
+function renderProgressSteps() {
+  const wrap = document.getElementById('progressSteps');
+  wrap.innerHTML = '';
+  for (let i = 1; i <= 9; i++) {
+    const step = document.querySelector(`[data-step="${i}"]`);
+    const title = step ? step.dataset.title : `Paso ${i}`;
+    const btn = document.createElement('button');
+    btn.className = 'progress-step';
+    btn.dataset.stepBtn = i;
+    btn.textContent = `${i}. ${title}`;
+    btn.onclick = () => {
+      step.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    };
+    wrap.appendChild(btn);
+  }
+}
+
+function updateProgress() {
+  let complete = 0;
+  for (let i = 1; i <= 9; i++) {
+    const btn = document.querySelector(`[data-step-btn="${i}"]`);
+    if (!btn) continue;
+    if (isStepComplete(i)) {
+      btn.classList.add('complete');
+      complete++;
+    } else {
+      btn.classList.remove('complete');
+    }
+  }
+  const pct = (complete / 9) * 100;
+  document.getElementById('progressBar').style.width = pct + '%';
+}
+
+// ============== FINAL OFFER PREVIEW ==============
+function renderFinalPreview() {
+  const f = state.fields;
+  const wrap = document.getElementById('offer-preview');
+
+  const offerName = f.f_offer_name || '<span class="empty-line">(añade el nombre en el Paso 8)</span>';
+
+  const ts = [f.f_ts1, f.f_ts2, f.f_ts3].filter(Boolean);
+  const tsHTML = ts.length > 0
+    ? ts.map(t => `<li>${escapeHtml(t)}</li>`).join('')
+    : '<span class="empty-line">(añade los touchstones en el Paso 9)</span>';
+
+  // Promesa
+  const promesaParts = [];
+  if (f.f_estado_inicial) promesaParts.push(`Pasa de ${f.f_estado_inicial.trim()}`);
+  if (f.f_estado_final) promesaParts.push(`a ${f.f_estado_final.trim()}`);
+  if (f.f_tiempo) promesaParts.push(`en ${f.f_tiempo.trim()}`);
+  if (f.f_sin) promesaParts.push(`${f.f_sin.trim().startsWith('sin') ? '' : 'sin '}${f.f_sin.trim()}`);
+  const promesa = promesaParts.length > 0 ? promesaParts.join(', ') + '.' : '<span class="empty-line">(completa el Paso 2)</span>';
+
+  const avatar = f.f_avatar ? escapeHtml(f.f_avatar) : '<span class="empty-line">(completa el Paso 1)</span>';
+  const dolor = f.f_dolor ? escapeHtml(f.f_dolor) : '<span class="empty-line">(completa el Paso 1)</span>';
+
+  // Stack table
+  let stackHTML = '';
+  let total = parseFloat(f.f_main_value) || 0;
+  const rows = [];
+  if (f.f_main_name) rows.push(`<tr><td><strong>${escapeHtml(f.f_main_name)}</strong> <span style="color:var(--text-muted); font-size:12px;">(producto principal)</span></td><td style="text-align:right;">$${(parseFloat(f.f_main_value)||0).toLocaleString('es-CL')}</td></tr>`);
+  state.bonuses.forEach(b => {
+    if (b.name) {
+      total += parseFloat(b.value) || 0;
+      rows.push(`<tr><td>${escapeHtml(b.name)} <span style="color:var(--cyan); font-size:11px; font-weight:600;">GRATIS</span></td><td style="text-align:right;">$${(parseFloat(b.value)||0).toLocaleString('es-CL')}</td></tr>`);
+    }
+  });
+  if (rows.length > 0) {
+    const precio = parseFloat(f.f_precio) || 0;
+    stackHTML = `<table class="stack-table">
+      <thead><tr><th>Componente</th><th style="text-align:right;">Valor</th></tr></thead>
+      <tbody>${rows.join('')}</tbody>
+      <tfoot>
+        <tr><td>VALOR TOTAL</td><td style="text-align:right;">$${total.toLocaleString('es-CL')}</td></tr>
+        <tr><td>Precio hoy</td><td style="text-align:right;">$${precio.toLocaleString('es-CL')}</td></tr>
+      </tfoot>
+    </table>`;
+  } else {
+    stackHTML = '<p class="empty-line">(añade los componentes en el Paso 5)</p>';
+  }
+
+  // Obstacles & solutions list
+  let osHTML = '';
+  if (state.obstacles.length > 0) {
+    const validPairs = state.obstacles.map((o,i) => ({o, s: state.solutions[i] || ''})).filter(p => p.o.trim());
+    if (validPairs.length > 0) {
+      osHTML = '<ul>' + validPairs.map(p => `<li><strong>Obstáculo:</strong> ${escapeHtml(p.o)}${p.s ? `<br><strong style="color:var(--cyan);">Solución:</strong> ${escapeHtml(p.s)}` : ''}</li>`).join('') + '</ul>';
+    } else {
+      osHTML = '<p class="empty-line">(completa los Pasos 3 y 4)</p>';
+    }
+  } else {
+    osHTML = '<p class="empty-line">(completa los Pasos 3 y 4)</p>';
+  }
+
+  // Guarantees
+  let garantiaHTML = '';
+  if (f.f_garantia || f.f_garantia2) {
+    garantiaHTML = '';
+    if (f.f_garantia) garantiaHTML += `<p>🛡️ ${escapeHtml(f.f_garantia)}</p>`;
+    if (f.f_garantia2) garantiaHTML += `<p style="margin-top:8px;">🛡️ ${escapeHtml(f.f_garantia2)}</p>`;
+  } else {
+    garantiaHTML = '<p class="empty-line">(completa el Paso 6)</p>';
+  }
+
+  // Escasez / urgencia
+  let euHTML = '';
+  if (f.f_escasez) euHTML += `<p><strong>Escasez:</strong> ${escapeHtml(f.f_escasez)}</p>`;
+  if (f.f_urgencia) euHTML += `<p style="margin-top:8px;"><strong>Urgencia:</strong> ${escapeHtml(f.f_urgencia)}</p>`;
+  if (!euHTML) euHTML = '<p class="empty-line">(completa el Paso 7)</p>';
+
+  wrap.innerHTML = `
+    <h3>${escapeHtml(f.f_offer_name) || '<span class="empty-line">(añade el nombre en el Paso 8)</span>'}</h3>
+
+    <h4>Cliente ideal</h4>
+    <p>${avatar}</p>
+
+    <h4>Dolor que resuelve</h4>
+    <p>${dolor}</p>
+
+    <h4>La promesa central</h4>
+    <p>${promesa}</p>
+
+    <h4>Touchstones (titulares para usar en página)</h4>
+    <ul>${tsHTML}</ul>
+
+    <h4>Stack de valor</h4>
+    ${stackHTML}
+
+    <h4>Obstáculos del cliente y cómo los resolvemos</h4>
+    ${osHTML}
+
+    <h4>Garantías</h4>
+    ${garantiaHTML}
+
+    <h4>Escasez y urgencia</h4>
+    ${euHTML}
+  `;
+}
+
+// ============== EXPORT: PLAIN TEXT FOR DOCS ==============
+function buildPlainText() {
+  const f = state.fields;
+  let txt = '';
+  txt += `OFERTA IRRESISTIBLE\n`;
+  txt += `${(f.f_offer_name || '(sin nombre)').toUpperCase()}\n`;
+  txt += `${'='.repeat(60)}\n\n`;
+
+  txt += `CLIENTE IDEAL\n`;
+  txt += `${f.f_avatar || '—'}\n\n`;
+
+  txt += `DOLOR QUE RESUELVE\n`;
+  txt += `${f.f_dolor || '—'}\n\n`;
+
+  txt += `LA PROMESA CENTRAL\n`;
+  const promesaParts = [];
+  if (f.f_estado_inicial) promesaParts.push(`Pasa de ${f.f_estado_inicial}`);
+  if (f.f_estado_final) promesaParts.push(`a ${f.f_estado_final}`);
+  if (f.f_tiempo) promesaParts.push(`en ${f.f_tiempo}`);
+  if (f.f_sin) promesaParts.push(`${f.f_sin.startsWith('sin') ? '' : 'sin '}${f.f_sin}`);
+  txt += `${promesaParts.length ? promesaParts.join(', ') + '.' : '—'}\n\n`;
+
+  txt += `TOUCHSTONES (TITULARES)\n`;
+  [f.f_ts1, f.f_ts2, f.f_ts3].filter(Boolean).forEach((t,i) => txt += `  ${i+1}. ${t}\n`);
+  if (![f.f_ts1, f.f_ts2, f.f_ts3].some(Boolean)) txt += '  —\n';
+  txt += '\n';
+
+  txt += `STACK DE VALOR\n`;
+  let total = parseFloat(f.f_main_value) || 0;
+  if (f.f_main_name) txt += `  • ${f.f_main_name} (Producto principal) — $${(parseFloat(f.f_main_value)||0).toLocaleString('es-CL')}\n`;
+  state.bonuses.forEach(b => {
+    if (b.name) {
+      total += parseFloat(b.value) || 0;
+      txt += `  • ${b.name} (GRATIS) — $${(parseFloat(b.value)||0).toLocaleString('es-CL')}\n`;
+    }
+  });
+  txt += `  ─────────────────────────────\n`;
+  txt += `  VALOR TOTAL:  $${total.toLocaleString('es-CL')}\n`;
+  const precio = parseFloat(f.f_precio) || 0;
+  txt += `  PRECIO HOY:   $${precio.toLocaleString('es-CL')}\n`;
+  if (precio > 0 && total > 0) txt += `  RATIO:        ${(total/precio).toFixed(1)}× valor sobre precio\n`;
+  txt += '\n';
+
+  txt += `OBSTÁCULOS DEL CLIENTE Y SOLUCIONES\n`;
+  const pairs = state.obstacles.map((o,i) => ({o, s: state.solutions[i] || ''})).filter(p => p.o.trim());
+  if (pairs.length > 0) {
+    pairs.forEach((p,i) => {
+      txt += `  ${i+1}. Obstáculo: ${p.o}\n`;
+      txt += `     Solución:  ${p.s || '(pendiente)'}\n`;
+    });
+  } else {
+    txt += '  —\n';
+  }
+  txt += '\n';
+
+  txt += `GARANTÍAS\n`;
+  if (f.f_garantia) txt += `  🛡️  ${f.f_garantia}\n`;
+  if (f.f_garantia2) txt += `  🛡️  ${f.f_garantia2}\n`;
+  if (!f.f_garantia && !f.f_garantia2) txt += '  —\n';
+  txt += '\n';
+
+  txt += `ESCASEZ Y URGENCIA\n`;
+  if (f.f_escasez) txt += `  Escasez:  ${f.f_escasez}\n`;
+  if (f.f_urgencia) txt += `  Urgencia: ${f.f_urgencia}\n`;
+  if (!f.f_escasez && !f.f_urgencia) txt += '  —\n';
+  txt += '\n';
+
+  txt += `MERCADO\n`;
+  if (f.f_poder) txt += `  Poder adquisitivo: ${f.f_poder}\n`;
+  if (f.f_canal) txt += `  Canal de adquisición: ${f.f_canal}\n`;
+  txt += '\n';
+
+  txt += `${'='.repeat(60)}\n`;
+  txt += `Creado con OfertaPro · Loops de Marcas Rentables\n`;
+  txt += `Fauadz Kassen — CEO\n`;
+  txt += `${new Date().toLocaleDateString('es-CL', { year: 'numeric', month: 'long', day: 'numeric' })}\n`;
+
+  return txt;
+}
+
+// ============== DOWNLOAD PDF ==============
+function downloadPDF() {
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF({ unit: 'pt', format: 'letter' });
+  const f = state.fields;
+
+  const COLORS = {
+    bg: [10, 14, 20],
+    cyan: [0, 180, 200],
+    text: [40, 40, 40],
+    muted: [110, 110, 110],
+    accent: [0, 150, 170],
+    light: [240, 248, 250]
+  };
+
+  let y = 60;
+  const margin = 60;
+  const pageW = doc.internal.pageSize.getWidth();
+  const pageH = doc.internal.pageSize.getHeight();
+  const contentW = pageW - 2 * margin;
+
+  function checkPage(needed) {
+    if (y + needed > pageH - 60) {
+      doc.addPage();
+      y = 60;
+    }
+  }
+
+  function heading(text, size = 18, color = COLORS.cyan) {
+    checkPage(size + 20);
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(size);
+    doc.setTextColor(color[0], color[1], color[2]);
+    doc.text(text, margin, y);
+    y += size + 8;
+    // Underline
+    doc.setDrawColor(color[0], color[1], color[2]);
+    doc.setLineWidth(1);
+    doc.line(margin, y - 4, margin + 50, y - 4);
+    y += 8;
+  }
+
+  function subheading(text) {
+    checkPage(22);
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(11);
+    doc.setTextColor(60, 60, 60);
+    doc.text(text.toUpperCase(), margin, y);
+    y += 16;
+  }
+
+  function paragraph(text, opts = {}) {
+    if (!text) text = '—';
+    doc.setFont('helvetica', opts.bold ? 'bold' : 'normal');
+    doc.setFontSize(opts.size || 10);
+    doc.setTextColor(opts.muted ? COLORS.muted[0] : COLORS.text[0],
+                     opts.muted ? COLORS.muted[1] : COLORS.text[1],
+                     opts.muted ? COLORS.muted[2] : COLORS.text[2]);
+    const lines = doc.splitTextToSize(text, contentW);
+    lines.forEach(line => {
+      checkPage(14);
+      doc.text(line, margin, y);
+      y += 13;
+    });
+    y += 4;
+  }
+
+  function bullet(text, indent = 0) {
+    if (!text) return;
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(10);
+    doc.setTextColor(COLORS.text[0], COLORS.text[1], COLORS.text[2]);
+    const lines = doc.splitTextToSize(text, contentW - 20 - indent);
+    lines.forEach((line, i) => {
+      checkPage(14);
+      if (i === 0) {
+        doc.setTextColor(COLORS.cyan[0], COLORS.cyan[1], COLORS.cyan[2]);
+        doc.text('•', margin + indent, y);
+        doc.setTextColor(COLORS.text[0], COLORS.text[1], COLORS.text[2]);
+      }
+      doc.text(line, margin + 14 + indent, y);
+      y += 13;
+    });
+    y += 2;
+  }
+
+  function divider() {
+    checkPage(10);
+    doc.setDrawColor(220, 220, 220);
+    doc.setLineWidth(0.5);
+    doc.line(margin, y, pageW - margin, y);
+    y += 14;
+  }
+
+  // ============ COVER PAGE ============
+  // Top banner
+  doc.setFillColor(COLORS.bg[0], COLORS.bg[1], COLORS.bg[2]);
+  doc.rect(0, 0, pageW, 140, 'F');
+
+  // Brand
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(11);
+  doc.setTextColor(0, 229, 255);
+  doc.text('LOOPS', margin, 55);
+  doc.setTextColor(255, 255, 255);
+  doc.text(' DE MARCAS ', margin + 38, 55);
+  doc.setTextColor(0, 229, 255);
+  doc.text(' RENTABLES', margin + 110, 55);
+
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(9);
+  doc.setTextColor(180, 180, 180);
+  doc.text('OFERTAPRO · OFERTA IRRESISTIBLE', margin, 75);
+
+  // Date in top right
+  doc.setFontSize(9);
+  doc.setTextColor(180, 180, 180);
+  const dateStr = new Date().toLocaleDateString('es-CL', { year: 'numeric', month: 'long', day: 'numeric' });
+  doc.text(dateStr, pageW - margin, 75, { align: 'right' });
+
+  // Title - offer name
+  y = 200;
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(28);
+  doc.setTextColor(20, 20, 20);
+  const titleLines = doc.splitTextToSize(f.f_offer_name || 'Tu Oferta Irresistible', contentW);
+  titleLines.forEach(line => {
+    doc.text(line, margin, y);
+    y += 32;
+  });
+
+  // Subtitle - main promise
+  y += 10;
+  const promesaParts = [];
+  if (f.f_estado_inicial) promesaParts.push(`Pasa de ${f.f_estado_inicial}`);
+  if (f.f_estado_final) promesaParts.push(`a ${f.f_estado_final}`);
+  if (f.f_tiempo) promesaParts.push(`en ${f.f_tiempo}`);
+  if (f.f_sin) promesaParts.push(`${f.f_sin.startsWith('sin') ? '' : 'sin '}${f.f_sin}`);
+  const promesa = promesaParts.length ? promesaParts.join(', ') + '.' : '';
+  if (promesa) {
+    doc.setFont('helvetica', 'italic');
+    doc.setFontSize(13);
+    doc.setTextColor(COLORS.muted[0], COLORS.muted[1], COLORS.muted[2]);
+    const pLines = doc.splitTextToSize(promesa, contentW);
+    pLines.forEach(line => {
+      doc.text(line, margin, y);
+      y += 18;
+    });
+  }
+
+  // Touchstones box on cover
+  y += 30;
+  const ts = [f.f_ts1, f.f_ts2, f.f_ts3].filter(Boolean);
+  if (ts.length > 0) {
+    doc.setFillColor(COLORS.light[0], COLORS.light[1], COLORS.light[2]);
+    const boxY = y;
+    const boxHeight = 30 + ts.length * 30;
+    doc.roundedRect(margin, boxY, contentW, boxHeight, 8, 8, 'F');
+
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(10);
+    doc.setTextColor(COLORS.cyan[0], COLORS.cyan[1], COLORS.cyan[2]);
+    doc.text('TITULARES (TOUCHSTONES)', margin + 16, boxY + 22);
+
+    let tsY = boxY + 42;
+    ts.forEach((t, i) => {
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(10);
+      doc.setTextColor(40, 40, 40);
+      const lines = doc.splitTextToSize(`${i + 1}.  ${t}`, contentW - 32);
+      lines.forEach(line => {
+        doc.text(line, margin + 16, tsY);
+        tsY += 13;
+      });
+      tsY += 4;
+    });
+    y = boxY + boxHeight + 20;
+  }
+
+  // Author footer on cover
+  y = pageH - 90;
+  doc.setDrawColor(0, 180, 200);
+  doc.setLineWidth(1.5);
+  doc.line(margin, y, margin + 40, y);
+  y += 18;
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(11);
+  doc.setTextColor(40, 40, 40);
+  doc.text('Construido con OfertaPro', margin, y);
+  y += 14;
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(9);
+  doc.setTextColor(COLORS.muted[0], COLORS.muted[1], COLORS.muted[2]);
+  doc.text('Fauadz Kassen — CEO, Loops de Marcas Rentables', margin, y);
+  y += 12;
+  doc.setTextColor(COLORS.cyan[0], COLORS.cyan[1], COLORS.cyan[2]);
+  doc.text('marcasrentables.com', margin, y);
+
+  // ============ PAGE 2: DETAIL ============
+  doc.addPage();
+  y = 60;
+
+  heading('Cliente y mercado');
+  subheading('Cliente ideal');
+  paragraph(f.f_avatar);
+  subheading('Dolor que resuelve');
+  paragraph(f.f_dolor);
+  if (f.f_poder) { subheading('Poder adquisitivo'); paragraph(f.f_poder); }
+  if (f.f_canal) { subheading('Canal de adquisición'); paragraph(f.f_canal); }
+
+  y += 8;
+  heading('La promesa central');
+  paragraph(promesa || '—');
+
+  y += 8;
+  heading('Stack de valor');
+  let total = parseFloat(f.f_main_value) || 0;
+  if (f.f_main_name) {
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(10);
+    doc.setTextColor(40, 40, 40);
+    checkPage(20);
+    doc.text(f.f_main_name + ' (producto principal)', margin + 14, y);
+    doc.text('$' + (parseFloat(f.f_main_value)||0).toLocaleString('es-CL'), pageW - margin, y, { align: 'right' });
+    y += 16;
+  }
+  state.bonuses.forEach(b => {
+    if (b.name) {
+      total += parseFloat(b.value) || 0;
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(10);
+      doc.setTextColor(40, 40, 40);
+      checkPage(20);
+      doc.setTextColor(COLORS.cyan[0], COLORS.cyan[1], COLORS.cyan[2]);
+      doc.text('+', margin, y);
+      doc.setTextColor(40, 40, 40);
+      const nameLines = doc.splitTextToSize(b.name + ' (BONO GRATIS)', contentW - 100);
+      nameLines.forEach((line, i) => {
+        doc.text(line, margin + 14, y);
+        if (i === 0) doc.text('$' + (parseFloat(b.value)||0).toLocaleString('es-CL'), pageW - margin, y, { align: 'right' });
+        y += 13;
+      });
+      y += 2;
+    }
+  });
+
+  divider();
+  checkPage(40);
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(11);
+  doc.setTextColor(COLORS.cyan[0], COLORS.cyan[1], COLORS.cyan[2]);
+  doc.text('VALOR TOTAL', margin, y);
+  doc.text('$' + total.toLocaleString('es-CL'), pageW - margin, y, { align: 'right' });
+  y += 18;
+  const precio = parseFloat(f.f_precio) || 0;
+  doc.setFontSize(14);
+  doc.text('PRECIO HOY', margin, y);
+  doc.text('$' + precio.toLocaleString('es-CL'), pageW - margin, y, { align: 'right' });
+  y += 22;
+  if (total > 0 && precio > 0) {
+    doc.setFont('helvetica', 'italic');
+    doc.setFontSize(10);
+    doc.setTextColor(COLORS.muted[0], COLORS.muted[1], COLORS.muted[2]);
+    doc.text(`Ratio: ${(total/precio).toFixed(1)}× valor sobre precio`, margin, y);
+    y += 16;
+  }
+
+  y += 16;
+  heading('Obstáculos del cliente y nuestras soluciones');
+  const pairs = state.obstacles.map((o,i) => ({o, s: state.solutions[i] || ''})).filter(p => p.o.trim());
+  if (pairs.length > 0) {
+    pairs.forEach((p, i) => {
+      checkPage(50);
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(10);
+      doc.setTextColor(COLORS.text[0], COLORS.text[1], COLORS.text[2]);
+      doc.text(`Obstáculo ${i+1}:`, margin, y);
+      const oLines = doc.splitTextToSize(p.o, contentW - 75);
+      oLines.forEach((line, li) => {
+        doc.setFont('helvetica', 'normal');
+        doc.text(line, margin + 70, y);
+        y += 13;
+      });
+      y += 2;
+      if (p.s) {
+        doc.setFont('helvetica', 'bold');
+        doc.setTextColor(COLORS.cyan[0], COLORS.cyan[1], COLORS.cyan[2]);
+        doc.text('Solución:', margin, y);
+        doc.setFont('helvetica', 'normal');
+        doc.setTextColor(COLORS.text[0], COLORS.text[1], COLORS.text[2]);
+        const sLines = doc.splitTextToSize(p.s, contentW - 75);
+        sLines.forEach(line => {
+          doc.text(line, margin + 70, y);
+          y += 13;
+        });
+      }
+      y += 8;
+    });
+  } else {
+    paragraph('—');
+  }
+
+  y += 8;
+  heading('Garantías');
+  if (f.f_garantia) { bullet(f.f_garantia); }
+  if (f.f_garantia2) { bullet(f.f_garantia2); }
+  if (!f.f_garantia && !f.f_garantia2) paragraph('—');
+
+  y += 8;
+  heading('Escasez y urgencia');
+  if (f.f_escasez) { subheading('Escasez'); paragraph(f.f_escasez); }
+  if (f.f_urgencia) { subheading('Urgencia'); paragraph(f.f_urgencia); }
+  if (!f.f_escasez && !f.f_urgencia) paragraph('—');
+
+  // Page numbers
+  const pageCount = doc.internal.getNumberOfPages();
+  for (let i = 1; i <= pageCount; i++) {
+    doc.setPage(i);
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(8);
+    doc.setTextColor(150, 150, 150);
+    doc.text(`Página ${i} de ${pageCount}  ·  OfertaPro · Loops de Marcas Rentables`, pageW / 2, pageH - 30, { align: 'center' });
+  }
+
+  const safeName = (f.f_offer_name || 'oferta').replace(/[^\w\sáéíóúñ-]/gi, '').replace(/\s+/g, '_').toLowerCase();
+  doc.save(`oferta_${safeName}.pdf`);
+}
+
+// ============== OPEN IN GOOGLE DOCS ==============
+function openInGoogleDocs() {
+  // Strategy: copy text to clipboard, then open Google Docs create page.
+  // User pastes manually. Most reliable way without OAuth.
+  const txt = buildPlainText();
+  navigator.clipboard.writeText(txt).then(() => {
+    // Open new Google Doc
+    window.open('https://docs.google.com/document/create', '_blank');
+    showToast('Texto copiado al portapapeles. Pega (Ctrl+V / Cmd+V) en el documento nuevo.', 5000);
+  }).catch(() => {
+    // Fallback - download as txt
+    downloadAsText();
+    window.open('https://docs.google.com/document/create', '_blank');
+    showToast('Descargamos un .txt. Súbelo a Google Docs (Archivo → Abrir).', 5000);
+  });
+}
+
+function downloadAsText() {
+  const txt = buildPlainText();
+  const blob = new Blob([txt], { type: 'text/plain;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  const safeName = (state.fields.f_offer_name || 'oferta').replace(/[^\w\sáéíóúñ-]/gi, '').replace(/\s+/g, '_').toLowerCase();
+  a.download = `oferta_${safeName}.txt`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+function copyToClipboard() {
+  const txt = buildPlainText();
+  navigator.clipboard.writeText(txt).then(() => {
+    showToast('✓ Oferta copiada al portapapeles', 2500);
+  }).catch(() => {
+    showToast('No se pudo copiar. Descarga el PDF en su lugar.', 3000);
+  });
+}
+
+function resetAll() {
+  if (!confirm('¿Seguro? Esto va a borrar todo lo que llenaste.')) return;
+  localStorage.removeItem(STORAGE_KEY);
+  location.reload();
+}
+
+// ============== TOAST ==============
+function showToast(msg, duration = 3000) {
+  let toast = document.getElementById('toast');
+  if (!toast) {
+    toast = document.createElement('div');
+    toast.id = 'toast';
+    toast.style.cssText = `
+      position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(100px);
+      background: var(--bg-card); border: 1px solid var(--cyan); color: var(--text);
+      padding: 14px 20px; border-radius: 12px; font-size: 14px; font-weight: 500;
+      box-shadow: var(--shadow-lg); z-index: 1000;
+      transition: transform 0.3s ease; max-width: 380px; text-align: center;
+    `;
+    document.body.appendChild(toast);
+  }
+  toast.textContent = msg;
+  setTimeout(() => { toast.style.transform = 'translateX(-50%) translateY(0)'; }, 10);
+  setTimeout(() => {
+    toast.style.transform = 'translateX(-50%) translateY(100px)';
+  }, duration);
+}
+
+// ============== TAB SWITCHING ==============
+function switchTab(tabName) {
+  document.querySelectorAll('.tab-view').forEach(v => v.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + tabName).classList.add('active');
+  document.querySelector(`.tab-btn[data-tab="${tabName}"]`).classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ============== NAMING GENERATOR (Step 8) ==============
+const NAMING_TEMPLATES = [
+  // 3 templates with different priorities
+  { id: 'magnetic_first', label: 'Magnético + Resultado' },
+  { id: 'avatar_first', label: 'Avatar + Container' },
+  { id: 'goal_first', label: 'Resultado + Tiempo' }
+];
+
+let chosenNameIdx = -1;
+let generatedNames = ['', '', ''];
+
+function generateOfferNames() {
+  const f = state.fields;
+  const M = (f.f_magic_m || '').trim();
+  const A = (f.f_magic_a || '').trim();
+  const G = (f.f_magic_g || '').trim();
+  const I = (f.f_magic_i || '').trim();
+  const C = (f.f_magic_c || '').trim();
+
+  if (!M && !A && !G && !I && !C) {
+    showToast('Llena al menos 2-3 letras de la fórmula MAGIC primero ✏️', 3000);
+    return;
+  }
+
+  // Build 3 distinct combinations
+  // Variant 1: Magnetic + Container : Goal in Interval
+  const v1Parts = [];
+  if (M) v1Parts.push(M);
+  if (C) v1Parts.push(C);
+  let v1 = v1Parts.join(' ');
+  const v1Tail = [];
+  if (G) v1Tail.push(G);
+  if (I) v1Tail.push(I);
+  if (v1 && v1Tail.length) v1 += ': ' + v1Tail.join(' ');
+  else if (v1Tail.length) v1 = v1Tail.join(' ');
+
+  // Variant 2: Container Avatar — Goal Interval
+  const v2Parts = [];
+  if (C) v2Parts.push(C);
+  if (A) v2Parts.push(A);
+  let v2 = v2Parts.join(' ');
+  const v2Tail = [];
+  if (G) v2Tail.push(G);
+  if (I) v2Tail.push(I);
+  if (v2 && v2Tail.length) v2 += ' — ' + v2Tail.join(' ');
+  else if (v2Tail.length) v2 = v2Tail.join(' ');
+
+  // Variant 3: Goal Interval (Container)
+  const v3Parts = [];
+  if (G) v3Parts.push(G);
+  if (I) v3Parts.push(I);
+  let v3 = v3Parts.join(' ');
+  if (C) v3 += v3 ? ` (${C})` : C;
+
+  // Fallback if any is empty: build something from whatever is available
+  const allParts = [M, A, G, I, C].filter(Boolean);
+  if (!v1) v1 = allParts.slice(0, 3).join(' ');
+  if (!v2) v2 = allParts.slice(0, 2).reverse().join(' — ') + (allParts[2] ? ': ' + allParts[2] : '');
+  if (!v3) v3 = allParts.join(' · ');
+
+  generatedNames = [v1, v2, v3].map(n => titleCase(n));
+  chosenNameIdx = -1;
+  renderNameOptions();
+}
+
+function titleCase(str) {
+  if (!str) return str;
+  const minorWords = new Set(['de','la','el','los','las','en','un','una','y','o','a','para','con','sin','del','al','que','tu','su']);
+  return str.split(/(\s+|:|—|·|\()/).map((part, i) => {
+    if (!part.trim() || /^[\s:—·(]+$/.test(part)) return part;
+    const lower = part.toLowerCase();
+    if (i > 0 && minorWords.has(lower)) return lower;
+    return part.charAt(0).toUpperCase() + part.slice(1).toLowerCase();
+  }).join('');
+}
+
+function renderNameOptions() {
+  const wrap = document.getElementById('name-options');
+  const vibeEl = document.getElementById('name-vibe-text');
+  if (!generatedNames.some(Boolean)) {
+    wrap.innerHTML = '';
+    vibeEl.style.display = 'none';
+    return;
+  }
+  vibeEl.style.display = 'block';
+  wrap.innerHTML = generatedNames.map((name, idx) => `
+    <div class="name-option ${chosenNameIdx === idx ? 'chosen' : ''}" data-idx="${idx}">
+      <div class="name-checkbox" onclick="chooseName(${idx})"></div>
+      <input type="text" value="${escapeAttr(name)}" oninput="updateGeneratedName(${idx}, this.value)" placeholder="Versión ${idx + 1}">
+    </div>
+  `).join('');
+}
+
+function chooseName(idx) {
+  chosenNameIdx = idx;
+  const final = document.getElementById('f_offer_name');
+  if (final) {
+    final.value = generatedNames[idx] || '';
+    state.fields.f_offer_name = final.value;
+    saveState();
+    refreshOutputs();
+  }
+  renderNameOptions();
+  showToast('✓ Nombre escogido — se copió al campo final', 2200);
+}
+
+function updateGeneratedName(idx, val) {
+  generatedNames[idx] = val;
+  if (chosenNameIdx === idx) {
+    const final = document.getElementById('f_offer_name');
+    if (final) {
+      final.value = val;
+      state.fields.f_offer_name = val;
+      saveState();
+      refreshOutputs();
+    }
+  }
+}
+
+// ============== SKOOL HELPER ==============
+const SKOOL_URL = 'https://www.skool.com/crear-y-no-parar-1884/about';
+
+function copyOfferAndOpenSkool(ev) {
+  ev.preventDefault();
+  const txt = buildPlainText();
+  navigator.clipboard.writeText(txt).then(() => {
+    window.open(SKOOL_URL, '_blank', 'noopener');
+    showToast('✓ Oferta copiada. Pégala en la comunidad de Skool. 🎓', 4500);
+  }).catch(() => {
+    downloadAsText();
+    window.open(SKOOL_URL, '_blank', 'noopener');
+    showToast('Descargamos un .txt — adjúntalo en tu post de Skool.', 4500);
+  });
+}
+
+function copyHooksAndOpenSkool(ev) {
+  ev.preventDefault();
+  if (hooksState.generatedAngles.length === 0) {
+    showToast('Primero genera tus ángulos con el botón "Procesar" arriba ⚡', 3500);
+    document.querySelector('button[onclick="processAnglesAndHooks()"]')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    return;
+  }
+  const txt = buildHooksPlainText();
+  navigator.clipboard.writeText(txt).then(() => {
+    window.open(SKOOL_URL, '_blank', 'noopener');
+    showToast('✓ Ángulos y hooks copiados. Pégalos en tu post de Skool. 🎓', 4500);
+  }).catch(() => {
+    showToast('No se pudo copiar al portapapeles.', 3000);
+  });
+}
+
+// ============== HOOKS MODULE STATE ==============
+const hooksState = {
+  audiencia: '',
+  segmento: '',
+  problema: '',
+  transformacion: '',
+  mec_no: '',
+  mec_si: '',
+  subavatars: [],  // { name, pain, desire, mechanism }
+  generatedAngles: [],  // [{ avatarName, isStrongest, angles: [{title, reason, hooks: []}] }]
+  filledHooks: [],  // [{ text, category, framework, trigger }]
+  activeFilter: 'all'
+};
+
+const HOOKS_STORAGE_KEY = 'ofertapro_hooks_v1';
+
+function loadHooksState() {
+  try {
+    const raw = localStorage.getItem(HOOKS_STORAGE_KEY);
+    if (!raw) return;
+    const s = JSON.parse(raw);
+    Object.assign(hooksState, s);
+  } catch(e) {}
+}
+
+function saveHooksState() {
+  try {
+    localStorage.setItem(HOOKS_STORAGE_KEY, JSON.stringify({
+      audiencia: hooksState.audiencia,
+      segmento: hooksState.segmento,
+      problema: hooksState.problema,
+      transformacion: hooksState.transformacion,
+      mec_no: hooksState.mec_no,
+      mec_si: hooksState.mec_si,
+      subavatars: hooksState.subavatars,
+      generatedAngles: hooksState.generatedAngles,
+      filledHooks: hooksState.filledHooks
+    }));
+  } catch(e) {}
+}
+
+// ============== HOOK TEMPLATES (LIBRARY) ==============
+const HOOK_TEMPLATES = [
+  // ===== Sheet 1: Inconsciente Solución =====
+  { id:1, template:"Solo un [SEG] entiende lo frustrante que es [PROB]", framework:"Tribal", trigger:"Identidad" },
+  { id:2, template:"El problema de usar [MEC_NO] es precisamente lo que termina empeorando todo", framework:"Educacional", trigger:"Dolor" },
+  { id:3, template:"Si eres [SEG] y aún sufres [PROB], necesitas conocer [MEC_SI]", framework:"PAS", trigger:"Dolor" },
+  { id:4, template:"No intentes [MEC_SI] si quieres seguir viviendo con [PROB]", framework:"Reverse", trigger:"Psicología inversa" },
+  { id:5, template:"POV: eres [SEG] y otra vez pasa [PROB]", framework:"POV", trigger:"Meme relatable" },
+  { id:6, template:"[SEG], esto explica por qué te pasa [PROB]", framework:"Insight", trigger:"Curiosidad" },
+  { id:7, template:"Si nadie te explicó cómo evitar [PROB] siendo [SEG], mira esto", framework:"Educativo", trigger:"Autoridad" },
+  { id:8, template:"[SEG] que ya probaron [MEC_NO] saben que esto es verdad", framework:"Social Proof", trigger:"Comunidad" },
+  { id:9, template:"El error #1 de los [SEG] es seguir usando [MEC_NO]", framework:"Error callout", trigger:"Shock" },
+  { id:10, template:"Si eres [SEG], deja de hacer esto antes de dormir → [MEC_NO]", framework:"Pattern interrupt", trigger:"Hábito" },
+  { id:11, template:"Esto NO es para cualquier persona. Solo [SEG] entenderán", framework:"Exclusividad", trigger:"Status" },
+  { id:12, template:"[SEG] cuando descubren [MEC_SI] por primera vez 🤯", framework:"Descubrimiento", trigger:"Dopamina" },
+  { id:13, template:"Si [PROB] te suena familiar… probablemente eres [SEG]", framework:"Identidad", trigger:"Empatía" },
+  { id:14, template:"El día que dejé [MEC_NO] empezó [TRANS]", framework:"Story", trigger:"Transformación" },
+  { id:15, template:"[SEG], nadie habla de esto pero [PROB] tiene solución", framework:"Secret", trigger:"Curiosidad" },
+  { id:16, template:"Si llevas años intentando [TRANS] usando [MEC_NO], escucha esto", framework:"Frustración", trigger:"Esperanza" },
+  { id:17, template:"Solo necesitas dejar [MEC_NO] para empezar [TRANS]", framework:"Simplificación", trigger:"Alivio" },
+  { id:18, template:"El problema no eres tú, es [MEC_NO]", framework:"Reframe", trigger:"Liberación culpa" },
+  { id:19, template:"[SEG], deja de normalizar [PROB]", framework:"Callout", trigger:"Despertar" },
+  { id:20, template:"Si todavía haces [MEC_NO], probablemente sigas teniendo [PROB]", framework:"Consecuencia", trigger:"Lógica" },
+  { id:21, template:"[SEG] inteligentes ya están usando [MEC_SI]", framework:"Status", trigger:"FOMO" },
+  { id:22, template:"Nadie quiere admitir que [MEC_NO] empeora [PROB]", framework:"Controversia", trigger:"Intriga" },
+  { id:23, template:"El secreto de los [SEG] que lograron [TRANS]", framework:"Autoridad", trigger:"Aspiración" },
+  { id:24, template:"Si hoy empezaras desde cero como [SEG], harías esto → [MEC_SI]", framework:"Founder POV", trigger:"Experiencia" },
+  { id:25, template:"[SEG] cansados de [PROB] están cambiando a esto", framework:"Trend", trigger:"Movimiento" },
+  { id:26, template:"El antes y después de dejar [MEC_NO]", framework:"Before After", trigger:"Transformación" },
+  { id:27, template:"Esto pasa cuando un [SEG] prueba [MEC_SI]", framework:"Experimento", trigger:"Curiosidad" },
+  { id:28, template:"Si [TRANS] es tu meta, deja [MEC_NO] hoy", framework:"Acción", trigger:"Claridad" },
+  { id:29, template:"[SEG], deja de perder tiempo con [MEC_NO]", framework:"Directo", trigger:"Urgencia" },
+  { id:30, template:"El hack que usan los [SEG] para evitar [PROB]", framework:"Hack", trigger:"Curiosidad" },
+  { id:31, template:"Probablemente estás haciendo [MEC_NO] sin darte cuenta", framework:"Shock", trigger:"Autoconciencia" },
+  { id:32, template:"[SEG], esto explica por qué aún no logras [TRANS]", framework:"Diagnóstico", trigger:"Autoridad" },
+  { id:33, template:"Si [PROB] aparece cada semana… esto lo cambia", framework:"Patrón", trigger:"Solución" },
+  { id:34, template:"No necesitas más esfuerzo. Necesitas [MEC_SI]", framework:"Minimalismo", trigger:"Alivio" },
+  { id:35, template:"El verdadero enemigo de [TRANS] es [MEC_NO]", framework:"Villano", trigger:"Narrativa" },
+  { id:36, template:"[SEG], ¿cuántas veces más intentarás [MEC_NO]?", framework:"Confrontación", trigger:"Honestidad" },
+  { id:37, template:"Lo que nadie te dice sobre [PROB]", framework:"Secret", trigger:"Intriga" },
+  { id:38, template:"[SEG] que aman [TRANS] hacen esto diferente", framework:"Aspiracional", trigger:"Status" },
+  { id:39, template:"Si [PROB] te está frenando… guarda esto", framework:"Guardable", trigger:"Utilidad" },
+  { id:40, template:"[SEG], este error cuesta caro → [MEC_NO]", framework:"Loss", trigger:"Miedo" },
+  { id:41, template:"Nadie esperaba que [MEC_SI] resolviera [PROB] así", framework:"Sorpresa", trigger:"Curiosidad" },
+  { id:42, template:"Si todavía dudas de [MEC_SI], mira esto", framework:"Challenge", trigger:"Autoridad" },
+  { id:43, template:"[SEG], esto cambia todo en menos de 30 días → [MEC_SI]", framework:"Resultado", trigger:"Promesa" },
+  { id:44, template:"El upgrade que necesitabas para [TRANS]", framework:"Upgrade", trigger:"Mejora" },
+  { id:45, template:"Si amas [TRANS], esto te obsesionará", framework:"Deseo", trigger:"Dopamina" },
+  { id:46, template:"[SEG], deja de sufrir [PROB] en silencio", framework:"Empático", trigger:"Dolor emocional" },
+  { id:47, template:"El cambio empieza cuando abandonas [MEC_NO]", framework:"Cambio", trigger:"Decisión" },
+  { id:48, template:"Si te identificas con esto → [PROB]", framework:"Relatable", trigger:"Empatía" },
+  { id:49, template:"[SEG], nadie te prepara para [PROB]", framework:"Realidad", trigger:"Honestidad" },
+  { id:50, template:"Esto separa a los [SEG] promedio de los que logran [TRANS]", framework:"Status", trigger:"Ambición" },
+  { id:51, template:"[SEG], esto duele pero alguien tenía que decirlo → [MEC_NO]", framework:"Brutal honesty", trigger:"Shock" },
+  { id:52, template:"Si quieres seguir igual, ignora [MEC_SI]", framework:"Reverse", trigger:"Rebeldía" },
+  { id:53, template:"El problema nunca fue [PROB], fue cómo intentaste resolverlo", framework:"Reframe", trigger:"Insight" },
+  { id:54, template:"[SEG] que entienden esto venden/viven mejor", framework:"Autoridad", trigger:"Aspiración" },
+  { id:55, template:"Si [PROB] te roba energía… cambia esto", framework:"Energía", trigger:"Alivio" },
+  { id:56, template:"[SEG], esto explica tu bloqueo", framework:"Diagnóstico", trigger:"Insight" },
+  { id:57, template:"El momento exacto donde [TRANS] empieza", framework:"Story", trigger:"Intriga" },
+  { id:58, template:"El truco más subestimado contra [PROB]", framework:"Hack", trigger:"Curiosidad" },
+  { id:59, template:"[SEG] inteligentes están abandonando [MEC_NO]", framework:"Trend", trigger:"FOMO" },
+  { id:60, template:"Si odias [PROB], deja esto hoy → [MEC_NO]", framework:"Acción", trigger:"Liberación" },
+  { id:61, template:"[SEG], guarda esto para cuando vuelva [PROB]", framework:"Guardable", trigger:"Utilidad" },
+  { id:62, template:"El error silencioso detrás de [PROB]", framework:"Misterio", trigger:"Curiosidad" },
+  { id:63, template:"Si [TRANS] parece imposible… mira esto", framework:"Esperanza", trigger:"Optimismo" },
+  { id:64, template:"[SEG], probablemente nadie te dijo esto", framework:"Insider", trigger:"Exclusividad" },
+  { id:65, template:"Esto cambió la vida de miles de [SEG]", framework:"Social Proof", trigger:"Validación" },
+  { id:66, template:"Si quieres [TRANS] sin sufrir [PROB]", framework:"Promesa", trigger:"Alivio" },
+  { id:67, template:"[SEG], deja de complicarlo", framework:"Simplificación", trigger:"Paz" },
+  { id:68, template:"La razón real por la que [MEC_NO] falla", framework:"Revelación", trigger:"Autoridad" },
+  { id:69, template:"[SEG], este cambio es incómodo pero necesario", framework:"Growth", trigger:"Honestidad" },
+  { id:70, template:"El día que entendí esto dejó de existir [PROB]", framework:"Story", trigger:"Transformación" },
+  { id:71, template:"[SEG], esto vale más que cualquier hack", framework:"Autoridad", trigger:"Valor" },
+  { id:72, template:"Si te gusta [TRANS], esto es nivel PRO", framework:"Status", trigger:"Aspiración" },
+  { id:73, template:"[SEG], deja de competir con esto → [MEC_NO]", framework:"Branding", trigger:"Diferenciación" },
+  { id:74, template:"El nuevo estándar para [TRANS]", framework:"Trend", trigger:"Modernidad" },
+  { id:75, template:"[SEG], si esto te incomoda probablemente lo necesitas", framework:"Challenge", trigger:"Ego" },
+  { id:76, template:"Si [PROB] volvió… intenta esto", framework:"Solución rápida", trigger:"Esperanza" },
+  { id:77, template:"[SEG], probablemente estás más cerca de [TRANS] de lo que crees", framework:"Motivacional", trigger:"Esperanza" },
+  { id:78, template:"No necesitas suerte. Necesitas [MEC_SI]", framework:"Empower", trigger:"Control" },
+  { id:79, template:"[SEG], esto explica por qué otros avanzan más rápido", framework:"Comparación", trigger:"Competencia" },
+  { id:80, template:"El upgrade silencioso detrás de [TRANS]", framework:"Misterio", trigger:"Intriga" },
+  { id:81, template:"[SEG], deja de pagar el precio de [MEC_NO]", framework:"Loss", trigger:"Dolor dinero" },
+  { id:82, template:"Si [PROB] te está cansando… prueba esto", framework:"Empático", trigger:"Alivio" },
+  { id:83, template:"[SEG], nadie esperaba esto de [MEC_SI]", framework:"Sorpresa", trigger:"Curiosidad" },
+  { id:84, template:"El momento donde todo cambia → [MEC_SI]", framework:"Cinemático", trigger:"Intriga" },
+  { id:85, template:"[SEG], esto es incómodamente efectivo", framework:"Brutal", trigger:"Shock" },
+  { id:86, template:"Si sigues haciendo [MEC_NO], seguirás teniendo [PROB]", framework:"Lógica", trigger:"Consecuencia" },
+  { id:87, template:"[SEG], esto separa amateurs de profesionales", framework:"Status", trigger:"Ego" },
+  { id:88, template:"El mejor consejo que recibí para [TRANS]", framework:"Mentor", trigger:"Autoridad" },
+  { id:89, template:"[SEG], probablemente estás ignorando esto", framework:"Callout", trigger:"Atención" },
+  { id:90, template:"Si nadie cree que puedas lograr [TRANS], mira esto", framework:"Rebel", trigger:"Validación" },
+  { id:91, template:"[SEG], esto debería ser ilegal de lo efectivo", framework:"Hyperbole", trigger:"Humor" },
+  { id:92, template:"Lo probé para evitar [PROB] y pasó esto", framework:"Experiencia", trigger:"Curiosidad" },
+  { id:93, template:"[SEG], guarda esto antes que lo borren", framework:"Viral", trigger:"Escasez" },
+  { id:94, template:"Si quieres [TRANS], empieza aquí", framework:"CTA", trigger:"Claridad" },
+  { id:95, template:"[SEG], esto es lo más honesto que escucharás hoy", framework:"Honestidad", trigger:"Autoridad" },
+  { id:96, template:"El secreto incómodo detrás de [PROB]", framework:"Secret", trigger:"Intriga" },
+  { id:97, template:"[SEG], esto no es magia… es [MEC_SI]", framework:"Mechanism", trigger:"Claridad" },
+  { id:98, template:"Si [TRANS] es tu estándar… esto también debería serlo", framework:"Premium", trigger:"Status" },
+  { id:99, template:"[SEG], probablemente subestimaste esto", framework:"Insight", trigger:"Curiosidad" },
+  { id:100, template:"Si llegaste hasta aquí probablemente eres [SEG]", framework:"Tribal", trigger:"Comunidad" },
+  // ===== Sheet 2: Inconsciente Problema =====
+  { id:101, template:"[SEG], esto probablemente te va a doler escuchar", framework:"Identidad", trigger:"Empatía" },
+  { id:102, template:"Si eres [SEG], guarda esto ahora", framework:"Identidad", trigger:"Utilidad" },
+  { id:103, template:"Solo [SEG] llegan hasta este video", framework:"Identidad", trigger:"Exclusividad" },
+  { id:104, template:"[SEG], nadie te preparó para [PROB]", framework:"Identidad", trigger:"Realidad" },
+  { id:105, template:"Si esto te pasó siendo [SEG], no estás solo", framework:"Identidad", trigger:"Empatía" },
+  { id:106, template:"[SEG], probablemente llevas años haciendo esto mal → [MEC_NO]", framework:"Identidad", trigger:"Shock" },
+  { id:107, template:"Solo [SEG] obsesivos entenderán esto", framework:"Identidad", trigger:"Status" },
+  { id:108, template:"Si [PROB] te persigue cada semana… mira esto", framework:"Problema", trigger:"Persistencia" },
+  { id:109, template:"El verdadero motivo detrás de [PROB]", framework:"Problema", trigger:"Revelación" },
+  { id:110, template:"Nadie habla del costo real de [PROB]", framework:"Problema", trigger:"Loss" },
+  { id:111, template:"El error silencioso detrás de [PROB]", framework:"Problema", trigger:"Misterio" },
+  { id:112, template:"Probablemente [PROB] no es tu culpa", framework:"Problema", trigger:"Liberación" },
+  { id:113, template:"Esto empeora [PROB] → [MEC_NO]", framework:"Problema", trigger:"Causa" },
+  { id:114, template:"El momento donde [PROB] empieza a desaparecer", framework:"Problema", trigger:"Esperanza" },
+  { id:115, template:"[PROB] está conectado con esto", framework:"Problema", trigger:"Intriga" },
+  { id:116, template:"Lo que nadie te explicó sobre [PROB]", framework:"Problema", trigger:"Curiosidad" },
+  { id:117, template:"El error número uno detrás de [PROB]", framework:"Problema", trigger:"Autoridad" },
+  { id:118, template:"Si [PROB] aparece en silencio… cuidado", framework:"Problema", trigger:"Miedo" },
+  { id:119, template:"Nadie esperaba que [PROB] tuviera esta causa", framework:"Problema", trigger:"Sorpresa" },
+  { id:120, template:"Este hábito alimenta [PROB]", framework:"Problema", trigger:"Diagnóstico" },
+  { id:121, template:"[PROB] no desaparece hasta dejar esto", framework:"Problema", trigger:"Solución" },
+  { id:122, template:"La razón incómoda detrás de [PROB]", framework:"Problema", trigger:"Brutal" },
+  { id:123, template:"El secreto detrás de [TRANS]", framework:"Transformación", trigger:"Curiosidad" },
+  { id:124, template:"Cómo [SEG] lograron [TRANS]", framework:"Transformación", trigger:"Social Proof" },
+  { id:125, template:"El upgrade silencioso para [TRANS]", framework:"Transformación", trigger:"Misterio" },
+  { id:126, template:"Si [TRANS] es tu meta… empieza aquí", framework:"Transformación", trigger:"CTA" },
+  { id:127, template:"[TRANS] sin sufrir [PROB]", framework:"Transformación", trigger:"Promesa" },
+  { id:128, template:"El antes y después real de [TRANS]", framework:"Transformación", trigger:"Before After" },
+  { id:129, template:"El estándar nuevo para [TRANS]", framework:"Transformación", trigger:"Modernidad" },
+  { id:130, template:"Lo que cambia cuando logras [TRANS]", framework:"Transformación", trigger:"Aspiración" },
+  { id:131, template:"Nadie esperaba lograr [TRANS] así", framework:"Transformación", trigger:"Sorpresa" },
+  { id:132, template:"[TRANS] empieza cuando abandonas [MEC_NO]", framework:"Transformación", trigger:"Decisión" },
+  { id:133, template:"Si amas [TRANS], mira esto", framework:"Transformación", trigger:"Deseo" },
+  { id:134, template:"El cambio real hacia [TRANS]", framework:"Transformación", trigger:"Verdad" },
+  { id:135, template:"[SEG] están obsesionados con esto", framework:"Transformación", trigger:"Trend" },
+  { id:136, template:"La forma más rápida hacia [TRANS]", framework:"Transformación", trigger:"Velocidad" },
+  { id:137, template:"El nuevo estándar para [SEG]", framework:"Transformación", trigger:"Premium" },
+  { id:138, template:"[TRANS] explicado simple", framework:"Transformación", trigger:"Claridad" },
+  { id:139, template:"Si quieres [TRANS], guarda esto", framework:"Transformación", trigger:"Guardable" },
+  { id:140, template:"Este hábito acelera [TRANS]", framework:"Transformación", trigger:"Hack" },
+  { id:141, template:"[TRANS] empieza hoy", framework:"Transformación", trigger:"Urgencia" },
+  { id:142, template:"El upgrade invisible hacia [TRANS]", framework:"Transformación", trigger:"Insight" },
+  { id:143, template:"El problema nunca fue [PROB], fue [MEC_NO]", framework:"Mecanismo", trigger:"Reframe" },
+  { id:144, template:"Por qué [MEC_NO] falla siempre", framework:"Mecanismo", trigger:"Autoridad" },
+  { id:145, template:"Si sigues usando [MEC_NO], seguirás teniendo [PROB]", framework:"Mecanismo", trigger:"Lógica" },
+  { id:146, template:"El enemigo oculto es [MEC_NO]", framework:"Mecanismo", trigger:"Villano" },
+  { id:147, template:"[SEG] inteligentes abandonaron [MEC_NO]", framework:"Mecanismo", trigger:"FOMO" },
+  { id:148, template:"El cambio empieza cuando pruebas [MEC_SI]", framework:"Mecanismo", trigger:"Decisión" },
+  { id:149, template:"Nadie esperaba que [MEC_SI] funcionara así", framework:"Mecanismo", trigger:"Sorpresa" },
+  { id:150, template:"[MEC_SI] explicado en 10 segundos", framework:"Mecanismo", trigger:"Claridad" },
+  { id:151, template:"El hack detrás de [MEC_SI]", framework:"Mecanismo", trigger:"Hack" },
+  { id:152, template:"Esto hace diferente a [MEC_SI]", framework:"Mecanismo", trigger:"Diferenciación" },
+  { id:153, template:"POV: eres [SEG] y vuelve [PROB]", framework:"Viral", trigger:"POV" },
+  { id:154, template:"Guarda esto si quieres [TRANS]", framework:"Viral", trigger:"Guardable" },
+  { id:155, template:"No deberías estar viendo esto si amas [MEC_NO]", framework:"Viral", trigger:"Reverse" },
+  { id:156, template:"Este video no es para todos", framework:"Viral", trigger:"Exclusividad" },
+  { id:157, template:"El consejo que nadie quiere escuchar", framework:"Viral", trigger:"Honestidad" },
+  { id:158, template:"Esto debería ser ilegal de lo efectivo", framework:"Viral", trigger:"Hyperbole" },
+  { id:159, template:"Si llegaste hasta aquí probablemente necesitas [MEC_SI]", framework:"Viral", trigger:"Tribal" },
+  { id:160, template:"Probé [MEC_SI] para evitar [PROB] y pasó esto", framework:"Viral", trigger:"Experiencia" },
+  { id:161, template:"Solo los que entienden [TRANS] se quedarán", framework:"Viral", trigger:"Exclusividad" }
+];
+
+// Categorize by "type" (Identidad/Problema/Transformación/Mecanismo/Viral)
+function getHookCategory(h) {
+  const t = h.template;
+  if (/\[SEG\]/.test(t) && !/\[PROB\]|\[TRANS\]/.test(t)) return 'Identidad';
+  if (/\[MEC_NO\]|\[MEC_SI\]/.test(t) && /^(?:Por qué|Esto hace|El enemigo|El hack|Si sigues usando|El cambio empieza|Nadie esperaba que|.* explicado en 10|.* abandonaron \[MEC|.* nunca fue.*\[MEC)/.test(t)) return 'Mecanismo';
+  if (/\[TRANS\]/.test(t)) return 'Transformación';
+  if (/\[PROB\]/.test(t)) return 'Problema';
+  if (h.framework === 'Viral' || h.framework === 'POV' || h.framework === 'Hyperbole') return 'Viral';
+  return 'Identidad';
+}
+
+// ============== SUB AVATAR HANDLING ==============
+function renderSubavatars() {
+  const wrap = document.getElementById('subavatars-list');
+  if (!wrap) return;
+  if (hooksState.subavatars.length === 0) {
+    wrap.innerHTML = '<div class="placeholder-state"><div class="icon">👥</div>Añade tu primer sub-avatar abajo para ángulos más afilados.</div>';
+    return;
+  }
+  wrap.innerHTML = hooksState.subavatars.map((sa, idx) => `
+    <div class="subavatar-item">
+      <div class="subavatar-item-head">
+        <span class="subavatar-item-label">Sub-Avatar ${idx + 1}</span>
+        <button class="list-item-remove" onclick="removeSubavatar(${idx})" title="Eliminar">✕</button>
+      </div>
+      <div class="subavatar-fields">
+        <input type="text" placeholder="Nombre o etiqueta del sub-avatar (ej: 'Pareja olvidadiza')" value="${escapeAttr(sa.name||'')}" oninput="updateSubavatar(${idx}, 'name', this.value)">
+        <textarea placeholder="Su dolor más específico (qué le duele más que a los demás)" oninput="updateSubavatar(${idx}, 'pain', this.value)">${escapeAttr(sa.pain||'')}</textarea>
+        <textarea placeholder="Lo que más desea (su deseo principal en sus palabras)" oninput="updateSubavatar(${idx}, 'desire', this.value)">${escapeAttr(sa.desire||'')}</textarea>
+        <input type="text" placeholder="¿Qué del producto le hablaría directamente? (opcional)" value="${escapeAttr(sa.mechanism||'')}" oninput="updateSubavatar(${idx}, 'mechanism', this.value)">
+      </div>
+    </div>
+  `).join('');
+}
+
+function addSubavatar() {
+  hooksState.subavatars.push({ name:'', pain:'', desire:'', mechanism:'' });
+  saveHooksState();
+  renderSubavatars();
+}
+
+function removeSubavatar(idx) {
+  hooksState.subavatars.splice(idx, 1);
+  saveHooksState();
+  renderSubavatars();
+}
+
+function updateSubavatar(idx, key, val) {
+  hooksState.subavatars[idx][key] = val;
+  saveHooksState();
+}
+
+// ============== BIND HOOKS VARIABLES ==============
+function bindHooksFields() {
+  const map = {
+    h_audiencia: 'audiencia',
+    h_segmento: 'segmento',
+    h_problema: 'problema',
+    h_transformacion: 'transformacion',
+    h_mec_no: 'mec_no',
+    h_mec_si: 'mec_si'
+  };
+  Object.keys(map).forEach(elId => {
+    const el = document.getElementById(elId);
+    if (!el) return;
+    if (hooksState[map[elId]]) el.value = hooksState[map[elId]];
+    el.addEventListener('input', () => {
+      hooksState[map[elId]] = el.value;
+      saveHooksState();
+    });
+  });
+}
+
+// ============== LOAD FROM OFFER MODULE ==============
+function loadOfferDataToHooks() {
+  const f = state.fields;
+  const mappings = [
+    ['h_audiencia', f.f_avatar],
+    ['h_segmento', f.f_avatar],
+    ['h_problema', f.f_dolor],
+    ['h_transformacion', buildTransformationFromOffer()],
+    ['h_mec_no', ''],
+    ['h_mec_si', f.f_main_name || f.f_offer_name]
+  ];
+  let count = 0;
+  mappings.forEach(([id, val]) => {
+    if (val) {
+      const el = document.getElementById(id);
+      if (el && !el.value) {
+        el.value = val;
+        el.dispatchEvent(new Event('input'));
+        count++;
+      }
+    }
+  });
+  if (count === 0) {
+    showToast('Llena la pestaña "Oferta Irresistible" primero para auto-cargar datos aquí.', 4000);
+  } else {
+    showToast(`✓ ${count} campos cargados desde tu Oferta. Revísalos y ajusta si necesitas.`, 3500);
+  }
+}
+
+function buildTransformationFromOffer() {
+  const f = state.fields;
+  if (f.f_estado_final) return f.f_estado_final;
+  return '';
+}
+
+// ============== ANGLE GENERATION LOGIC ==============
+function processAnglesAndHooks() {
+  // Read current values
+  hooksState.audiencia = document.getElementById('h_audiencia').value.trim();
+  hooksState.segmento = document.getElementById('h_segmento').value.trim();
+  hooksState.problema = document.getElementById('h_problema').value.trim();
+  hooksState.transformacion = document.getElementById('h_transformacion').value.trim();
+  hooksState.mec_no = document.getElementById('h_mec_no').value.trim();
+  hooksState.mec_si = document.getElementById('h_mec_si').value.trim();
+
+  // Validation
+  const required = [hooksState.segmento, hooksState.problema, hooksState.transformacion];
+  if (required.filter(Boolean).length < 2) {
+    showToast('Llena al menos el segmento, el problema y la transformación. ✏️', 4000);
+    document.getElementById('h_segmento').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    return;
+  }
+
+  // Generate angles
+  hooksState.generatedAngles = generateAngles();
+
+  // Fill hook library
+  hooksState.filledHooks = fillAllHooks();
+
+  saveHooksState();
+  renderAnglesResult();
+  renderHookLibrary();
+
+  // Scroll to results
+  setTimeout(() => {
+    document.getElementById('angles-result').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, 100);
+
+  showToast('✓ Ángulos y ' + hooksState.filledHooks.length + ' hooks generados', 3500);
+}
+
+function generateAngles() {
+  const blocks = [];
+  const hasSubs = hooksState.subavatars.filter(s => s.name || s.pain).length > 0;
+
+  if (hasSubs) {
+    // One block per sub-avatar
+    const validSubs = hooksState.subavatars.filter(s => s.name || s.pain);
+    validSubs.forEach((sub, idx) => {
+      blocks.push(buildAvatarBlock(sub, idx === 0));
+    });
+  } else {
+    // One block for the main avatar
+    const mainAvatar = {
+      name: hooksState.segmento || 'Cliente Principal',
+      pain: hooksState.problema,
+      desire: hooksState.transformacion,
+      mechanism: hooksState.mec_si
+    };
+    blocks.push(buildAvatarBlock(mainAvatar, true));
+  }
+  return blocks;
+}
+
+function buildAvatarBlock(avatar, isStrongest) {
+  const pain = avatar.pain || hooksState.problema;
+  const desire = avatar.desire || hooksState.transformacion;
+  const mech = avatar.mechanism || hooksState.mec_si;
+  const mecNo = hooksState.mec_no;
+
+  // Angle 1: Problem-focused (stop the pain)
+  const angle1 = {
+    title: pickAngleTitle('problem', pain, desire, mech),
+    reason: `Para alguien como ${avatar.name || 'tu cliente'}, ${pain.toLowerCase()} no es un inconveniente — es lo que le quita energía cada día. ${mech ? `${mech} ataca ese dolor directo.` : 'Tu producto le da la salida.'}`,
+    hooks: buildDirectHooks('problem', avatar, pain, desire, mech, mecNo)
+  };
+
+  // Angle 2: Transformation-focused (the new identity)
+  const angle2 = {
+    title: pickAngleTitle('transform', pain, desire, mech),
+    reason: `Tu cliente no quiere "menos ${pain.toLowerCase()}". Quiere convertirse en alguien que ${desire.toLowerCase()}. Es un cambio de identidad, no solo de síntoma.`,
+    hooks: buildDirectHooks('transform', avatar, pain, desire, mech, mecNo)
+  };
+
+  // Angle 3: Mechanism-focused (the differentiation)
+  const angle3 = {
+    title: pickAngleTitle('mechanism', pain, desire, mech),
+    reason: `${mecNo ? `Si ya probó ${mecNo.toLowerCase()} y le falló, entender por qué ${mech || 'tu mecanismo'} es distinto le da una razón concreta para creer.` : `${mech || 'Tu mecanismo'} es lo que hace que esto funcione cuando todo lo demás falló.`}`,
+    hooks: buildDirectHooks('mechanism', avatar, pain, desire, mech, mecNo)
+  };
+
+  return {
+    avatarName: avatar.name || hooksState.segmento || 'Cliente Principal',
+    isStrongest,
+    angles: [angle1, angle2, angle3]
+  };
+}
+
+function pickAngleTitle(kind, pain, desire, mech) {
+  // Generate actionable, customer-facing angle titles
+  if (kind === 'problem') {
+    if (pain) return `Detiene ${pain.toLowerCase().replace(/^(el |la |los |las )/, '')}`;
+    return 'Resuelve el problema de raíz';
+  }
+  if (kind === 'transform') {
+    if (desire) return `Te convierte en alguien que ${desire.toLowerCase().replace(/^(el |la |los |las |poder )/, '')}`;
+    return 'Te transforma sin esfuerzo';
+  }
+  if (kind === 'mechanism') {
+    if (mech) return `${mech} (no es magia, es método)`;
+    return 'El mecanismo único detrás del resultado';
+  }
+  return 'Ángulo';
+}
+
+function buildDirectHooks(kind, avatar, pain, desire, mech, mecNo) {
+  // Direct hooks following the "X. No Y" / "This is A. This is B." patterns from the framework
+  const seg = avatar.name || hooksState.segmento || 'Tú';
+  const hooks = [];
+
+  if (kind === 'problem') {
+    if (pain) hooks.push(`"5 minutos. Sin más ${pain.toLowerCase()}."`);
+    if (pain) hooks.push(`"Esto detiene ${pain.toLowerCase()} desde el primer día."`);
+    if (pain && desire) hooks.push(`"De ${pain.toLowerCase()} a ${desire.toLowerCase()} — sin pasos intermedios."`);
+  }
+  if (kind === 'transform') {
+    if (desire) hooks.push(`"${capFirst(desire)}. Sin trucos. Sin promesas vacías."`);
+    if (desire && mech) hooks.push(`"Esto no es ${mecNo || 'otro intento más'}. Es ${desire.toLowerCase()}."`);
+    if (desire) hooks.push(`"30 días. Y ${desire.toLowerCase()}."`);
+  }
+  if (kind === 'mechanism') {
+    if (mech) hooks.push(`"Esto es ${mech}. No es ${mecNo || 'lo mismo de siempre'}."`);
+    if (mech && pain) hooks.push(`"${mech}: 0% ${pain.toLowerCase()}, 100% resultado."`);
+    if (mecNo && mech) hooks.push(`"Si ${mecNo.toLowerCase()} te falló, esto es por qué: ${mech}."`);
+  }
+
+  // Fill from library if empty
+  if (hooks.length < 3) {
+    const cat = kind === 'problem' ? 'Problema' : kind === 'transform' ? 'Transformación' : 'Mecanismo';
+    const libHooks = hooksState.filledHooks.length > 0 ? hooksState.filledHooks : fillAllHooks();
+    const fromLib = libHooks.filter(h => h.category === cat).slice(0, 3 - hooks.length);
+    hooks.push(...fromLib.map(h => `"${h.text}"`));
+  }
+
+  return hooks.slice(0, 3).filter(Boolean);
+}
+
+function capFirst(s) {
+  if (!s) return s;
+  return s.charAt(0).toUpperCase() + s.slice(1);
+}
+
+// ============== FILL HOOK LIBRARY ==============
+function fillAllHooks() {
+  const seg = hooksState.segmento || hooksState.audiencia || '[tu cliente]';
+  const prob = hooksState.problema || '[tu problema]';
+  const trans = hooksState.transformacion || '[tu transformación]';
+  const mecNo = hooksState.mec_no || '[el mecanismo que NO funciona]';
+  const mecSi = hooksState.mec_si || '[tu mecanismo único]';
+
+  return HOOK_TEMPLATES.map(h => {
+    const filled = h.template
+      .replace(/\[SEG\]/g, seg)
+      .replace(/\[PROB\]/g, prob)
+      .replace(/\[TRANS\]/g, trans)
+      .replace(/\[MEC_NO\]/g, mecNo)
+      .replace(/\[MEC_SI\]/g, mecSi);
+    return {
+      id: h.id,
+      text: filled,
+      category: getHookCategory(h),
+      framework: h.framework,
+      trigger: h.trigger
+    };
+  });
+}
+
+// ============== RENDER ANGLE RESULTS ==============
+function renderAnglesResult() {
+  const wrap = document.getElementById('angles-result');
+  if (hooksState.generatedAngles.length === 0) {
+    wrap.innerHTML = '';
+    return;
+  }
+
+  let html = '<h2 style="font-family:\'Space Grotesk\',sans-serif; font-size:28px; margin-bottom:8px;">⚡ Tus ángulos accionables</h2>';
+  html += '<p style="color:var(--text-muted); margin-bottom:24px; font-size:14.5px;"><strong style="color:var(--amber);">Nota:</strong> NO tienes que testear cada ángulo por separado. Puedes hacer un concepto que pruebe varios ángulos con el hook más fuerte. Empieza por el sub-avatar marcado como STRONGEST.</p>';
+
+  hooksState.generatedAngles.forEach((block, blockIdx) => {
+    html += `<div class="avatar-block${block.isStrongest ? ' strongest' : ''}">
+      <div class="avatar-block-head">
+        <div class="avatar-block-name">${escapeHtml(block.avatarName)}</div>
+        ${block.isStrongest ? '<span class="avatar-rank-badge">⭐ STRONGEST — EMPIEZA POR AQUÍ</span>' : ''}
+      </div>
+      <div class="avatar-block-sub">3 ángulos accionables · 3 hooks por ángulo</div>`;
+
+    block.angles.forEach((angle, aIdx) => {
+      html += `<div class="angle">
+        <div class="angle-title">Ángulo ${aIdx + 1}: ${escapeHtml(angle.title)}</div>
+        <div class="angle-reason">${escapeHtml(angle.reason)}</div>
+        <div class="angle-hooks">
+          ${angle.hooks.map(h => `
+            <div class="angle-hook" onclick="copyAndFlash(this, '${escapeJs(h)}')">${escapeHtml(h)}</div>
+          `).join('')}
+        </div>
+      </div>`;
+    });
+
+    html += `</div>`;
+  });
+
+  wrap.innerHTML = html;
+}
+
+function copyAndFlash(el, text) {
+  navigator.clipboard.writeText(text.replace(/^"|"$/g, '')).then(() => {
+    const original = el.style.background;
+    el.style.background = 'var(--cyan-dark)';
+    el.style.borderLeftColor = 'var(--cyan)';
+    showToast('✓ Hook copiado', 1500);
+    setTimeout(() => {
+      el.style.background = '';
+    }, 800);
+  });
+}
+
+function escapeJs(s) {
+  if (!s) return '';
+  return String(s).replace(/\\/g, '\\\\').replace(/'/g, "\\'").replace(/\n/g, '\\n');
+}
+
+// ============== RENDER HOOK LIBRARY ==============
+function renderHookLibrary() {
+  if (hooksState.filledHooks.length === 0) return;
+  const lib = document.getElementById('hook-library');
+  lib.style.display = 'block';
+
+  // Build filter pills
+  const cats = ['all', 'Identidad', 'Problema', 'Transformación', 'Mecanismo', 'Viral'];
+  const filtersWrap = document.getElementById('hookFilters');
+  filtersWrap.innerHTML = cats.map(c => {
+    const count = c === 'all' ? hooksState.filledHooks.length : hooksState.filledHooks.filter(h => h.category === c).length;
+    const label = c === 'all' ? 'Todos' : c;
+    return `<button class="filter-pill ${hooksState.activeFilter === c ? 'active' : ''}" onclick="setHookFilter('${c}')">${label} (${count})</button>`;
+  }).join('');
+
+  renderHookList();
+}
+
+function setHookFilter(cat) {
+  hooksState.activeFilter = cat;
+  // Re-render filters to update active state correctly
+  renderHookLibrary();
+}
+
+function renderHookList() {
+  const wrap = document.getElementById('hookList');
+  if (!wrap) return;
+  const search = (document.getElementById('hookSearch')?.value || '').toLowerCase().trim();
+  let filtered = hooksState.filledHooks;
+  if (hooksState.activeFilter !== 'all') {
+    filtered = filtered.filter(h => h.category === hooksState.activeFilter);
+  }
+  if (search) {
+    filtered = filtered.filter(h => h.text.toLowerCase().includes(search));
+  }
+  if (filtered.length === 0) {
+    wrap.innerHTML = '<div class="placeholder-state">Sin resultados. Cambia el filtro o la búsqueda.</div>';
+    return;
+  }
+  wrap.innerHTML = filtered.map(h => `
+    <div class="hook-card">
+      <div class="hook-card-text">${escapeHtml(h.text)}</div>
+      <div class="hook-card-meta">
+        <span class="hook-tag">${escapeHtml(h.category)}</span>
+        <span class="hook-tag">${escapeHtml(h.framework)}</span>
+      </div>
+      <button class="hook-copy" onclick="copyHook(${h.id})">Copiar</button>
+    </div>
+  `).join('');
+}
+
+function copyHook(id) {
+  const h = hooksState.filledHooks.find(x => x.id === id);
+  if (!h) return;
+  navigator.clipboard.writeText(h.text).then(() => {
+    showToast('✓ Hook copiado', 1800);
+  });
+}
+
+// ============== BUILD PLAIN TEXT FOR HOOKS EXPORT ==============
+function buildHooksPlainText() {
+  let txt = '';
+  txt += `ÁNGULOS Y HOOKS HIPER-ESPECÍFICOS\n`;
+  txt += `${'='.repeat(60)}\n\n`;
+  txt += `Audiencia objetivo:   ${hooksState.audiencia || '—'}\n`;
+  txt += `Segmento específico:  ${hooksState.segmento || '—'}\n`;
+  txt += `Problema:             ${hooksState.problema || '—'}\n`;
+  txt += `Transformación:       ${hooksState.transformacion || '—'}\n`;
+  txt += `Mecanismo NO deseado: ${hooksState.mec_no || '—'}\n`;
+  txt += `Mecanismo único:      ${hooksState.mec_si || '—'}\n\n`;
+
+  hooksState.generatedAngles.forEach((block, idx) => {
+    txt += `${'─'.repeat(60)}\n`;
+    txt += `${idx === 0 ? '⭐ STRONGEST — ' : ''}SUB-AVATAR: ${block.avatarName}\n`;
+    txt += `${'─'.repeat(60)}\n\n`;
+    block.angles.forEach((angle, aIdx) => {
+      txt += `ÁNGULO ${aIdx + 1}: ${angle.title}\n`;
+      txt += `Razón para comprar: ${angle.reason}\n\n`;
+      txt += `Hooks:\n`;
+      angle.hooks.forEach(h => txt += `  ${h}\n`);
+      txt += '\n';
+    });
+  });
+
+  txt += `\n${'='.repeat(60)}\n`;
+  txt += `Creado con OfertaPro · Loops de Marcas Rentables\n`;
+  txt += `Fauadz Kassen — CEO\n`;
+  return txt;
+}
+
+// ============== INIT ==============
+function init() {
+  loadState();
+  loadHooksState();
+  if (state.obstacles.length === 0) {
+    state.obstacles = ['', '', ''];
+  }
+  if (state.bonuses.length === 0) {
+    state.bonuses = [{ name:'', value:'', objection:'' }];
+  }
+  renderObstacles();
+  renderBonuses();
+  setupGuaranteeTypes();
+  bindFields();
+  bindHooksFields();
+  renderSubavatars();
+  renderProgressSteps();
+  refreshOutputs();
+
+  // Re-render angles if they exist
+  if (hooksState.generatedAngles && hooksState.generatedAngles.length > 0) {
+    renderAnglesResult();
+    renderHookLibrary();
+  }
+}
+
+init();
+</script>
+</body>
+</html>
